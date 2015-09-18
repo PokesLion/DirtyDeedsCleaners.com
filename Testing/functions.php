@@ -1,0 +1,761 @@
+<?php
+
+global $script;
+
+include ('database.php');
+
+
+
+
+
+
+function loginPOST(){
+	
+		
+	$loggedIn = $_SESSION['loggedIn'];
+	$username = $_SESSION['login'];
+	$password = $_SESSION['password'];
+	$pagesViewed = $_SESSION['allPagesSeen'];
+	$error = $_SESSION['error'];
+	
+	if (!$error){
+		
+		$error = $_SESSION['collaborateErrorMessage'];
+		$_SESSION['collaborateErrorMessage'] = "";
+	}
+	
+	if (!$error){
+		$error = $_SESSION['emailErrorMessage'];
+		$_SESSION['emailErrorMessage'] = "";
+		
+		
+	}
+	
+	
+	#	  $lengthPassword = strlen($password);
+	
+	
+	
+	echo "<div id=\"account\">
+		
+	";
+	if($loggedIn){
+		
+		
+		echo "<h2>";
+		echo "<p>Welcome</p>";
+		echo "<p>Your username is : $username ";
+		echo "<p><a href=\"logout.php\">Logout</a> </p>";
+		echo "</h2><br><br><hr>Activity : ";
+		echo "<br><hr>";
+		
+		
+	}else{
+		
+		
+		
+		
+		#displayLogin shows the username and password form input fields
+		displayLogin();
+		
+
+	}
+	
+
+	#Display Error
+	if ($error){
+		echo "<br><br><hr><br>";
+		echo "<p class=\"error\"> Error : <ol class=\"error\"><li>$error</li></ol></p>";
+		echo "<br><hr>";
+		
+	}
+	echo "    </div>";			#Div end "account"			
+	
+			
+
+	$_SESSION['error'] = "";
+			
+	
+}
+
+
+
+function login(){
+		
+	global $username , $password , $signUp , $databaseUnm , $databasePwd;
+	
+	
+	if ($_SESSION['loggedIn']){	
+		
+		$loggedIn = 1;	
+		
+	}else{	
+		
+		
+		if ( $signUp ){
+			
+			
+			
+			
+			
+			if  (preg_match("/^$databaseUnm$/i"  , $username) )  {
+				
+				
+				$loggedIn = 0;
+				
+				
+			}elseif($username && $password){
+				
+				
+				
+				$loggedIn = 1;
+				#Add email validation?
+				$sql = "INSERT INTO user (Username , Password) VALUES (\"$username\"  , \"$password\")";
+				@mysql_query($sql) or die ('Error : ' . mysql_error());	
+				
+				
+			}else{
+				
+				
+				$loggedIn = 0;
+				
+			}		
+			
+		}elseif ($username || $password){			
+			
+			if ( preg_match( "/$username/i"  , $databaseUnm) && $password == $databasePwd )  {	
+				echo "<p>Logged in as : $username</p>";
+				$loggedIn = 1;
+				
+				
+				
+				
+			}else{
+				
+				$loggedIn = 0;
+				
+			}		
+			
+		}else{
+			
+			$loggedIn = 0;
+			
+		}
+	}
+
+	$_SESSION['loggedIn'] = $loggedIn;	
+
+	// #important vars page TODO
+	global $sidebar;
+	if ($sidebar){
+		
+		#Run Condition to ask for a login or say welcome
+		echo "<div id=\"sidebar2\">";
+		
+		#loginPOST();  This displays the login window if the user is not logged in.  
+		
+		echo "</div>";
+	}
+	
+	
+	
+	
+}
+
+function pageViews(){
+	
+	
+	
+	if( isset($_SESSION['views'])){
+		
+		$_SESSION['views'] += 1;
+		
+	}else{
+		
+		$_SESSION['views'] = 1;
+		
+	}
+
+
+		
+	
+	
+}
+
+
+
+##################		TODO	 - After this is done > Remember ME	> Sending a email
+
+function test_input($data) {
+		   $data = trim($data);
+		   $data = stripslashes($data);
+		   $data = htmlspecialchars($data);
+		   return $data;
+}
+		
+function displayLogin(){
+		
+	$errorsList = array();
+	
+	# Use this info to send the user to the appointment finalizing page after logging in during an attemt to schedule an appointment. 
+	$redirected = $_SESSION{'AppointmentRedirected'};
+	$email		= $_SESSION{'attemptedEmail'};	
+	$zipCode 	= $_SESSION{'zipCode'};
+	
+	
+	
+	if (($_SESSION{'cookieRemoveCounter'} > 1) && !$_SESSION{'cookieRemoveCounterMSG'}){
+		
+		alert("If your username and password wont clear, your web browser has stored cookies for this website. ");
+		
+		$_SESSION{'cookieRemoveCounterMSG'} = 1;
+	}
+	
+	
+	if ($redirected){
+		
+		
+		if ($_SESSION{'cookieRemove'}){
+			$username ="";
+			$cookiePass = "";
+			
+		}elseif($email){	
+			
+			$username = $email;		
+			
+			
+		}else{
+			
+			$username = $_COOKIE{'001'};
+			$cookiePass = $_COOKIE{'002'};
+			$_SESSION{'cookieRemove'} =0;
+			
+			
+		}
+	}	
+
+?>		
+		
+		<table class="login"  id="loginWindow" style="text-align:left">
+			<th colspan="3"><center>Returning/New Users</center></th><tr>
+			<form method="post" action="process.php"  class="login">
+				<tr /><td style="line-height:2"> <span style="color:white">#</span></td><tr />
+				<td style="position:relative;left:25%;margin-right:25% ">Email</td><tr></tr>
+				<td style="position:relative;left:25%;margin-right:25% " ><input size="35" type="email" name="login"  class="whitePadding" placeholder="Emai address" value="<?php   echo $username   ?>">  </td><tr />
+				<td style="position:relative;left:25%;margin-right:25% ">Password</td><tr />				
+				<td style="position:relative;left:25%;margin-right:25% "><input size="35"  type="password"  class="whitePadding" name="password" value="<?php   echo $cookiePass   ?>"></span></td><tr /> <td><span style="color:white">#</span> </td><tr /> 
+				<td><input id="submitLogin" type="submit" name="submitLogin" value="Login"></td><tr /> <td><span style="color:white">#</span> </td><tr /> 
+				<td style="position:relative;left:15%;margin-right:15%">Sign up : <input type="checkbox" name="signUp" id="checkbox"> Remember me : <input type="checkbox" name="rememberMe" id="checkbox">  &nbsp<a href="remove.php"><span style="color:blue">Remove username and password.</a></td>					
+			</form>			
+		</table>
+	
+		
+		
+<?php 
+		$errorArrayLength = count ($errorList);
+		
+		
+		#Print Error if an error exists
+		if ($errorArrayLength){
+			echo "<div class=\"error\">
+					
+			";
+			echo '<table border ="2" color="red" class="error" width="100px">';
+			echo "<th>Errors</th>";		
+				
+			for ($a = 0; $a < $errorArrayLength; $a++){
+				
+					echo "<tr><td>* $error</td>";
+			}
+			echo "</table>";
+			echo "</div>";#Test DIV and TABLE for color
+			
+		}
+		
+
+		
+}		
+
+
+
+function allPagesVisited (){
+	
+	$pagesViewed = array();
+	$pagesViewed{'index.php'} =  1;
+	
+	if(!$pagesViewed{__FILE__}){
+	
+		$pagesViewed{__FILE__} =  1;
+	
+	}
+	
+	foreach ($pagesViewed as $key){
+		
+		echo "<p>Page = $key</p>";
+	}
+	
+	
+	$_SESSION['allPagesSeen'] = array($pagesViewed);
+	
+}	
+	
+function accessAdmin(){		
+		
+	
+	if (preg_match( "/^admin\@dirtydeedscleaners\.com$/i" , $_SESSION['login']  ) &&  $_SESSION['loggedIn']  ){
+		
+		#administrator access?  Should be handled in process.php
+		
+		$_SESSION['printString'] = "Administrator = " .  $_SESSION['administrator'] . ", from process.php. <br> Logged In = " . $_SESSION['loggedIn']  . "<br> Page views =  " . $_SESSION['views']; #Show admin info
+		
+		
+		
+	}else{
+		
+		$_SESSION['administrator'] = 0;
+		
+		#$_SESSION['printString'] = "Administrator = " .  $_SESSION['administrator'] . ", from process.php. <br> Logged In = " . $_SESSION['loggedIn']  . "<br> Page views =  " . $_SESSION['views'];
+		
+	}
+}
+
+	
+	
+function adminTool(){
+	
+	
+	echo '<div id="marginTop">';
+	echo 	'<p>
+				Admin Page : <a href="admin.php">Admin </a><ul>';
+				
+	echo 			'<li><a href="sqlTable.php"> Create a SQL Table</a></li>										
+					<li><a href="sqlCommand.php"> SQL Commands </a></li>					
+					<li><a href="testPortal.php"> Testing Portal / Version Control</a></li>					
+					<li><a href="recordWork.php"> Record work</a></li>
+					<li><a href="viewInvoice.php">View Invoice</a></li>
+					<li><a href="userInfo.php">Users </a></li>
+					<li><a href="suggestionInfo.php">Suggestions </a></li>
+					<li><a href="emailInfo.php">Emails </a></li>					
+					
+					
+					
+					
+			</ul></p></div>';
+	
+}
+
+
+
+
+	
+	
+	
+	
+	
+function administrator(){
+	
+	
+	
+		
+	if (preg_match( "/^admin$/i" , $_SESSION['login']  ) &&  $_SESSION{'loggedIn'}){
+
+		$_SESSION['administrator'] = 1;
+		$_SESSION['printString'] = "Administrator = " .  $_SESSION['administrator'] . ", from process.php. <br> Logged In = " . $_SESSION['loggedIn']  . "<br> Page views =  " . $_SESSION['views'];
+		
+	}else{
+		
+		echo <<<OUT
+				<script		type="text/javascript">
+					window.location.assign('index.php');
+				</script>
+OUT;
+		
+		
+		
+	}
+	
+}
+
+function dynamicSQLCommand (){
+	
+	
+	$error = $_SESSION['adminCommandError'];
+	#Enter a  SQL command admin
+	echo<<<OUT
+	
+			<p><center>Create a MySQL command : 
+			<form action="adminCommand.php" method="post">
+				<input required type= "text" name="SQL" size="40">
+				<select name="table">
+					<option value="blank"></option>
+				  <option value="user">user</option>
+				  <option value="suggestions">suggestions</option>
+				  <option value="email">email</option>
+				</select>
+				<p><input id="submitCheckout" required  type= "submit" name="run" value="Run"></p>
+				
+				
+			</form>
+			
+			
+			</center></p>
+OUT;
+
+
+	if ($error){
+		echo "<span class=\"error\"> Error : $error</span>";
+	}
+}
+
+
+function alertUser($message){
+	
+	
+	?>
+	<script type='text/javascript'>
+		  alert('<? echo $message ?>'); 
+	</script>
+	
+	<?
+	
+}
+
+
+
+function timeStampLogout(){
+	
+	if ($_SESSION['loggedIn']){
+		if(time() - $_SESSION['timestamp'] > 900) { //subtract new timestamp from the old one		
+			
+			alertUser('Login time of 15 minutes over. \nRedirecting the your browser to the DirtyDeedsCleaners home page.');
+			
+			urlAssign("http://dirtydeedscleaners.com/logout.php");
+			
+		
+			
+			
+		} else {
+			$_SESSION['queueLogout'] = 0;
+			$_SESSION['timestamp'] = time(); //set new timestamp
+			#alertUser("Hello!   , Timestamp :   " . time());
+		}
+		
+		
+	}
+	
+	
+}
+
+
+function urlAssign($location){
+	
+	
+	
+	if (!$_SESSION{'debug'}){
+		echo "
+							<script		type=\"text/javascript\">
+								window.location.assign('" . $location . "');
+							</script>
+		";	
+		
+	}
+	
+	
+}	
+
+
+
+function columnPlus(){
+	
+	$db_host  = $_SESSION['db_host'];
+	$db_username = $_SESSION['db_username']; 
+	$db_pass = $_SESSION['db_pass'];
+	$db_name = $_SESSION['db_name'];
+	#$_SESSION{'database'}
+	$table = $_SESSION{'table'};
+	
+	#New Data  		TODO 		
+	#$columns = $_SESSION{'columnsSQL'};
+	#$dataTypes = $_SESSION{'dataTypes'};
+	
+	if (0){
+		
+		$column = $_POST{'column'};
+		$dataType = $_POST{'dataType'};
+		
+	}else{
+		
+		$column = "Username";		
+		$dataType = 'VARCHAR(30)';
+	}
+	
+	
+	if ($dataType){
+		$dataType = preg_replace( '/[\(n\)]/' , "", $dataType); 
+		$dataType = preg_replace( '/[\(p\)]/' , "", $dataType); 
+		$dataType = preg_replace( '/[\(p\,s\)]/' , "", $dataType); 
+		
+	}
+	
+	$dataTypeSpecific = $_POST{'dataTypeSpecific'};
+	
+	if ($dataTypeSpecific){
+		$dataTypeSpecific = "(" . $dataTypeSpecific . ")";
+		
+	}
+	
+	
+	
+	
+	
+	if ($table && $column  && $dataType ){
+		
+		$allRecentlyAddedSessionColumns = explode ( " " , $_SESSION{'recentlyAddedSessionColumn'});
+		
+		$_SESSION{'dataDump'} = $allRecentlyAddedSessionColumns;
+			
+		if (!$allRecentlyAddedSessionColumns[$column]){
+		
+			$_SESSION{'recentlyAddedSessionColumn'} .= " " . $column;
+			
+			$sql = "ALTER TABLE $table ADD COLLUNM ";
+			
+			$count = count($columns);
+			
+			if ($count){ # Set up mutiple colums at once
+				for ($i = 0; $i < $count ; $i++){
+					
+					$column = $colums[$i];
+					$dataType = $dataType[$i];
+					$dataTypeSpecific = $dataTypeSpecific[$i];
+					
+					$sql .= $column . " " . $dataType . $dataTypeSpecific . ", "; 
+					
+				}
+			}else{
+				$sql .= $column . " " . $dataType . $dataTypeSpecific; 
+				
+			}
+			
+			$_SESSION{'lastSqlCmd'} = $sql;
+			mysql_query($sql) or die ("Dead : " . mysql_error() );
+			
+			
+		}else{
+			
+			
+		}
+		
+		
+	}else{
+		
+		$_SESSION{'dataReqColumn'} = 1;
+		
+		
+		
+		urlAssign('sqlColumns.php');
+		
+	}
+	
+	
+	
+	
+	
+	
+}
+#		TODO : 		newTable(); , columnPlus(); insertSQL(); sortSQL(); deleteSQL();
+function insertSQL(){
+	
+	
+	$db_host  = $_SESSION['db_host'];
+	$db_username = $_SESSION['db_username']; 
+	$db_pass = $_SESSION['db_pass'];
+	$db_name = $_SESSION['db_name'];
+	#$_SESSION{'database'}
+	$table = $_SESSION{'table'};
+	
+	
+	# INSERT WORKS IF THERE IS ALREADY A COLLUNM ..  $sql = "INSERT INTO user (Username , Password) VALUES (\"$username\"  , \"$password\")";
+	
+	#NEEDED INFO
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+function WriteFileWithJavascript(){
+	
+	
+	
+	global $script;
+	
+	echo '<script type="text/javascript">
+	
+	function submitCheckoutPage(){
+	
+		alert(\'confirmButtonClick\'); 
+			
+		/// write to file
+		var txtFile = "/quotes/' . $counter . '/data.txt";						
+		var file = new File([""] , txtFile);				
+		file.open("w"); // open file with write access
+		file.writeln("1 \) The data recieved :  ");			/// start to write to the file
+		file.write("';
+		
+		#Out goes the data
+		$script .=  "Appointment RD = " . $_SESSION{'AppointmentRedirected'} . ", ";
+		$script .=  "attemptedEmail = " . $_SESSION{'attemptedEmail'} . ", "  ;
+		$script .=  "hours = " . $_SESSION{'hours'} . ", "  ;
+		$script .=  "ZipCode = " . $_SESSION{'zipCode'} . ", "  ;
+		$script .=  "startTime = " . $_SESSION{'startTime'} . ', ");			
+		
+		file.close();		
+		document.getElementById("checkoutForm").submit();			
+		
+		window.location.assign(\'/quotes/' . $counter  . '/data.txt\');
+
+	
+	}
+	
+	
+	</script>
+	
+	
+	';
+	
+	
+	
+}
+
+
+
+function startAppointmentCheck (){
+	connectSQL();
+
+	$day = date ("d") +1; 
+		
+	if ($day < 10 ){
+		
+		$day = "0" . $day;
+	}
+	
+	#echo "Day = $day";
+	
+	
+	#0000 indicates The time of day 
+	$tomorrowsDateMash  =  date ("Ym") . $day. "0000";
+	
+	
+	$sql = "SELECT Mash, Hours, ID FROM quotes WHERE Mash > $tomorrowsDateMash";
+	
+	
+	#201509170000    versus
+	#201509171200
+	$result = mysql_query ($sql);
+	$futureAppointments = array();
+
+	
+	if (0){
+		
+		#DEBUG
+		echo "Quote Number =  " . 	$_SESSION{'lastQuoteNumber'};
+		echo "Quote Details = " . $_SESSION{'lastQuoteMash'};
+		echo "Quote hrs = " . $_SESSION{'lastQuoteHRS'} . "<br/>";
+		
+		
+		
+
+	}
+	
+		
+	
+	
+	
+	$counter = 0;
+	while ($row = mysql_fetch_array ($result) ){	
+		
+		$mash = $row{'Mash'};
+		$hours = $row{'Hours'};			
+		$ID = $row{'ID'};	
+		
+		verifyAppontment($mash , $hours , $ID);		
+		#echo "Org  -> Mash : $mash , Hours : $hours , ID : $ID<br />";		DEBUG
+		
+		$counter++;
+	}
+	
+	if ($_SESSION{'confictingSchedule'}){
+		if (0){
+			echo "<br />Conflicting Schedule ";	
+		}
+		
+	}	
+		
+}
+
+function verifyAppontment($startTime , $hours , $ID) {	
+
+	#	$_SESSION{'lastQuoteNumber'}
+	#	$_SESSION{'lastQuoteMash'}						
+	#	$_SESSION{'lastQuoteHRS'}
+	
+	global $currentQuoteShown;
+	
+	if (!$_SESSION{'conflictiingSchedule'}){
+		
+		if (!$currentQuoteShown ){
+			
+			$currentAppointmentDate = substr($_SESSION{'lastQuoteMash'}, 0 , 8);
+			$currentAppointmentTime = substr($_SESSION{'lastQuoteMash'}, 8 , 4);
+			$currentAppointmentEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
+			
+			if (0){
+				echo "Current : <br />
+				Date : $currentAppointmentDate <br/>
+				Time : $currentAppointmentTime <br/>
+				Ends : $currentAppointmentEnds <br/>
+				";
+			}
+			
+			$currentQuoteShown = 1;
+		}
+		
+							
+		if ($_SESSION{'lastQuoteNumber'} != $ID){
+			
+			$priorApptStartDate = substr($startTime, 0 , 8);
+			$priorApptStartTime = substr($startTime, 8 , 4);
+			$priorApptStartEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
+						
+			$mashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);	#	$_SESSION{'lastQuoteMash'}	
+			
+			
+			#	Start time 	vs start time 
+			if (($_SESSION{'lastQuoteMash'} >= $startTime  && $_SESSION{'lastQuoteMash'} <= $mashRange) ||  ($currentAppointmentEnds >= $startTime  && $currentAppointmentEnds <= $mashRange)){
+				if (0){
+					echo "Schedule Conflicts <br/>Prior appointment : StartTime = $startTime  , End time : $mashRange <br />";
+					echo "Your appontment  =   Start Time  : " . $currentAppointmentTime . " , End time : $currentAppointmentEnds <br />";
+				}
+				
+				$_SESSION{'conflictiingSchedule'} = 1;
+				
+			}				
+			
+			
+		}
+	}
+	
+	
+}
+
+
+
+?>

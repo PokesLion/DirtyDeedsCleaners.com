@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>::Maps ::</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
+    <script type="text/javascript">
+        var map;
+
+        //COORDS
+        var brussels = [
+        new google.maps.LatLng(50.835866,4.258575),
+        new google.maps.LatLng(50.818083,4.244499),
+        new google.maps.LatLng(50.811358,4.276428),
+        new google.maps.LatLng(50.813094,4.302177),
+        new google.maps.LatLng(50.773162,4.338226),
+        new google.maps.LatLng(50.764259,4.384918),
+        new google.maps.LatLng(50.793132,4.482422),
+        new google.maps.LatLng(50.810274,4.450836),
+        new google.maps.LatLng(50.821120,4.476585),
+        new google.maps.LatLng(50.852342,4.462852),
+        new google.maps.LatLng(50.866861,4.421310),
+        new google.maps.LatLng(50.895021,4.430580),
+        new google.maps.LatLng(50.911692,4.413757),
+        new google.maps.LatLng(50.912342,4.395561),
+        new google.maps.LatLng(50.898486,4.377708),
+        new google.maps.LatLng(50.900868,4.328957),
+        new google.maps.LatLng(50.889174,4.293251),
+        new google.maps.LatLng(50.880294,4.297028),
+        new google.maps.LatLng(50.861878,4.279175),
+        new google.maps.LatLng(50.855593,4.288788),
+        new google.maps.LatLng(50.837817,4.282608),
+        new google.maps.LatLng(50.835866,4.259605)
+        ];
+
+        $(document).ready(function () {
+            //WHERE TO CENTER YOUR MAP
+            var latlng = new google.maps.LatLng(50.834999,4.387665);
+            var myOptions = {
+                zoom: 10,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+            var BrusselsHightlight;
+
+            //DRAW THE POLYGON OR POLYLINE
+            BrusselsHightlight = new google.maps.Polygon({
+                paths: brussels,
+                strokeColor: "#6666FF",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#6666FF",
+                fillOpacity: 0.35
+            });
+            BrusselsHightlight.setMap(map);
+
+        });
+
+    </script>
+    <style type="text/css">
+        html,body { height: 100%; margin: 0px; padding: 0px; }
+        #map_canvas {
+            width:600px;
+            height:400px;
+        }       
+    </style>
+</head>
+<body >
+<div id="map_canvas">
+
+</div>
+<!--main-->
+<div id="map_cord"></div>
+</body> 
+</html>

@@ -1,0 +1,88 @@
+Agoura Hills	December 8, 1982	20,330
+Alhambra	July 11, 1903	83,089
+Arcadia	August 5, 1903	56,364
+Artesia	May 29, 1959	16,522
+Avalon	June 26, 1913	3,728
+Azusa	December 29, 1898	46,361
+Baldwin Park	January 25, 1956	75,390
+Bell	November 7, 1927	35,477
+Bell Gardens	August 1, 1961	42,072
+Bellflower	September 3, 1957	76,616
+Beverly Hills	October 22, 1906	34,109
+Bradbury	July 26, 1957	1,048
+Burbank	July 8, 1911	103,340
+Calabasas	April 5, 1991	23,058
+Carson	February 20, 1968	91,714
+Cerritos	April 24, 1956	49,041
+Claremont	October 3, 1907	34,926
+Commerce	January 28, 1960	12,823
+Compton	May 11, 1888	96,455
+Covina	August 14, 1901	47,796
+Cudahy	November 10, 1960	23,805
+Culver City	September 20, 1917	38,883
+Diamond Bar	April 18, 1989	55,544
+Downey	December 17, 1956	111,772
+Duarte	August 22, 1957	21,321
+El Monte	November 18, 1912	113,475
+El Segundo	January 18, 1917	16,654
+Gardena	September 11, 1930	58,829
+Glendale	February 15, 1906	191,719
+Glendora	November 13, 1911	50,073
+Hawaiian Gardens	April 14, 1964	14,254
+Hawthorne	July 12, 1922	84,293
+Hermosa Beach	January 10, 1907	19,506
+Hidden Hills	October 19, 1961	1,856
+Huntington Park	September 1, 1906	58,114
+Industry	June 18, 1957	219
+Inglewood	February 14, 1908	109,673
+Irwindale	August 6, 1957	1,422
+La Cañada Flintridge	December 8, 1976	20,246
+La Habra Heights	December 4, 1978	5,325
+La Mirada	March 23, 1960	48,527
+La Puente	August 1, 1956	39,816
+La Verne	September 11, 1906	31,063
+Lakewood	April 16, 1954	80,048
+Lancaster	November 22, 1977	156,633
+Lawndale	December 28, 1959	32,769
+Lomita	June 30, 1964	20,256
+Long Beach	December 13, 1897	462,257
+Los Angeles	April 4, 1850	3,792,621
+Lynwood	July 16, 1921	69,772
+Malibu	March 28, 1991	12,645
+Manhattan Beach	December 7, 1912	35,135
+Maywood	September 2, 1924	27,395
+Monrovia	December 15, 1887	36,590
+Montebello	October 15, 1920	62,500
+Monterey Park	May 29, 1916	60,269
+Norwalk	August 26, 1957	105,549
+Palmdale	August 24, 1962	152,750
+Palos Verdes Estates	December 20, 1939	13,438
+Paramount	January 30, 1957	54,098
+Pasadena	June 19, 1886	137,122
+Pico Rivera	January 29, 1958	62,942
+Pomona	January 6, 1888	149,058
+Rancho Palos Verdes	September 7, 1973	41,643
+Redondo Beach	April 29, 1892	66,748
+Rolling Hills	September 18, 1957	1,860
+Rolling Hills Estates	January 24, 1957	8,067
+Rosemead	August 4, 1959	53,764
+San Dimas	August 4, 1960	33,371
+San Fernando	August 31, 1911	23,645
+San Gabriel	April 24, 1913	39,718
+San Marino	April 25, 1913	13,147
+Santa Clarita	December 15, 1987	176,320
+Santa Fe Springs	May 15, 1957	16,223
+Santa Monica	December 9, 1886	89,736
+Sierra Madre	February 7, 1907	10,917
+Signal Hill	April 22, 1924	11,016
+South El Monte	July 30, 1958	20,116
+South Gate	January 15, 1923	94,396
+South Pasadena	February 29, 1888	25,619
+Temple City	May 25, 1960	35,558
+Torrance	May 12, 1921	145,438
+Vernon	September 22, 1905	112
+Walnut	January 19, 1959	29,172
+West Covina	February 17, 1923	106,098
+West Hollywood	November 29, 1984	34,399
+Westlake Village	December 11, 1981	8,270
+Whittier	February 28, 1898	85,331
