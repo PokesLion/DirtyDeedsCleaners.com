@@ -924,6 +924,8 @@ input[type=number]{
 	font-size: 12px;
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	font-weight: bold;
+	width:7.14%;
+	
 
 
 
@@ -965,7 +967,7 @@ font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 -webkit-border-radius: 5px;
 border-radius: 5px;
 margin-bottom:100px;
-overflow:hide;
+padding-bottom:20px;
 
 
 
@@ -1006,19 +1008,6 @@ font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 		
 	margin-left: auto;
 	margin-right: auto;
-	
-	
-	
-	
-	/*
-	
-	
-	
-
-	
-
-
-	*/
 
 
 
@@ -1029,7 +1018,7 @@ font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 
 position:relative; 
 float:left;
-left:4%;
+left:20px;
 top:5%;
 width : 30%;
 min-width:250px;
@@ -1670,6 +1659,39 @@ select:focus{
 	padding:10px;		
 	text-align:center;
 	bottom:10px;
+	
+	
+	
+}
+
+#coverUpTransparrently{
+
+	
+	position:absolute;
+	width:100%;
+	height:100%;	
+	background-color: rgb(152,152,152);
+	z-index:100;	
+	opacity: 0.8;
+	padding-bottom:100px;
+	
+	
+
+}
+#sizeOverlay{
+	
+	overflow: hidden;
+    position: relative;
+    width: 100%;        
+	z-index:90;	
+	bottom:10px;
+	padding-bottom:10;
+	margin-bottom:-46;	
+	border-bottom-left-radius: 5px;		
+	border-bottom-right-radius: 5px;	
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	
 	
 	
 	

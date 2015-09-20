@@ -1,11 +1,11 @@
 <?php
 
+
+session_start();
+
 global $script;
 
 include ('database.php');
-
-
-
 
 
 
@@ -551,8 +551,6 @@ function columnPlus(){
 		
 		$_SESSION{'dataReqColumn'} = 1;
 		
-		
-		
 		urlAssign('sqlColumns.php');
 		
 	}
@@ -587,57 +585,22 @@ function insertSQL(){
 
 
 
-
-
-
-
-function WriteFileWithJavascript(){
-	
-	
-	
-	global $script;
-	
-	echo '<script type="text/javascript">
-	
-	function submitCheckoutPage(){
-	
-		alert(\'confirmButtonClick\'); 
-			
-		/// write to file
-		var txtFile = "/quotes/' . $counter . '/data.txt";						
-		var file = new File([""] , txtFile);				
-		file.open("w"); // open file with write access
-		file.writeln("1 \) The data recieved :  ");			/// start to write to the file
-		file.write("';
-		
-		#Out goes the data
-		$script .=  "Appointment RD = " . $_SESSION{'AppointmentRedirected'} . ", ";
-		$script .=  "attemptedEmail = " . $_SESSION{'attemptedEmail'} . ", "  ;
-		$script .=  "hours = " . $_SESSION{'hours'} . ", "  ;
-		$script .=  "ZipCode = " . $_SESSION{'zipCode'} . ", "  ;
-		$script .=  "startTime = " . $_SESSION{'startTime'} . ', ");			
-		
-		file.close();		
-		document.getElementById("checkoutForm").submit();			
-		
-		window.location.assign(\'/quotes/' . $counter  . '/data.txt\');
-
-	
-	}
-	
-	
-	</script>
-	
-	
-	';
-	
-	
-	
-}
-
-
-
 function startAppointmentCheck (){
+	
+	
+	if ($_SESSION{'adminDebug'}){
+		
+		
+		
+		
+		echo "<br/>FUNC-  START APPOINTMENT CHECK";
+		
+		echo "<br/>Set admin debug";
+		
+ 	}
+	
+	
+	
 	connectSQL();
 
 	$day = date ("d") +1; 
@@ -686,39 +649,59 @@ function startAppointmentCheck (){
 		$hours = $row{'Hours'};			
 		$ID = $row{'ID'};	
 		
+										
+		if ($_SESSION{'adminDebug'} && !$_SESSION{'conflictingSchedule'}){
+			
+			echo "<br/>Conflicting Schedule = " . $_SESSION{'conflictingSchedule'};
+			
+			echo "<br/>Prior mash = "  . $mash ;
+			echo "   HOURS  = "  . $hours;
+			echo "   ID = "  . $ID . "<br/><br/>";
+		
+			
+		}
+		
 		verifyAppontment($mash , $hours , $ID);		
 		#echo "Org  -> Mash : $mash , Hours : $hours , ID : $ID<br />";		DEBUG
 		
 		$counter++;
+		
+		if ($_SESSION{'conflictingSchedule'}){
+			break;
+			
+		}
 	}
 	
-	if ($_SESSION{'confictingSchedule'}){
-		if (0){
-			echo "<br />Conflicting Schedule ";	
-		}
-		
-	}	
+	
 		
 }
 
 function verifyAppontment($startTime , $hours , $ID) {	
 
+
+	
+	if ($_SESSION{'adminDebug'}){
+		echo "<br/>Confl Found = " . $_SESSION{'conflictingSchedule'};
+	}
 	#	$_SESSION{'lastQuoteNumber'}
 	#	$_SESSION{'lastQuoteMash'}						
 	#	$_SESSION{'lastQuoteHRS'}
 	
 	global $currentQuoteShown;
 	
-	if (!$_SESSION{'conflictiingSchedule'}){
+	if (!$_SESSION{'conflictingSchedule'}){
+		
+		
+		$currentAppointmentDate = substr($_SESSION{'lastQuoteMash'}, 0 , 8);
+		$currentAppointmentTime = substr($_SESSION{'lastQuoteMash'}, 8 , 4);
+		$currentAppointmentEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
 		
 		if (!$currentQuoteShown ){
 			
-			$currentAppointmentDate = substr($_SESSION{'lastQuoteMash'}, 0 , 8);
-			$currentAppointmentTime = substr($_SESSION{'lastQuoteMash'}, 8 , 4);
-			$currentAppointmentEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
 			
-			if (0){
-				echo "Current : <br />
+			
+			if ($_SESSION{'adminDebug'}){
+				echo "<br />Current : <br />
 				Date : $currentAppointmentDate <br/>
 				Time : $currentAppointmentTime <br/>
 				Ends : $currentAppointmentEnds <br/>
@@ -728,7 +711,7 @@ function verifyAppontment($startTime , $hours , $ID) {
 			$currentQuoteShown = 1;
 		}
 		
-							
+			
 		if ($_SESSION{'lastQuoteNumber'} != $ID){
 			
 			$priorApptStartDate = substr($startTime, 0 , 8);
@@ -738,16 +721,23 @@ function verifyAppontment($startTime , $hours , $ID) {
 			$mashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);	#	$_SESSION{'lastQuoteMash'}	
 			
 			
+			
 			#	Start time 	vs start time 
 			if (($_SESSION{'lastQuoteMash'} >= $startTime  && $_SESSION{'lastQuoteMash'} <= $mashRange) ||  ($currentAppointmentEnds >= $startTime  && $currentAppointmentEnds <= $mashRange)){
-				if (0){
-					echo "Schedule Conflicts <br/>Prior appointment : StartTime = $startTime  , End time : $mashRange <br />";
-					echo "Your appontment  =   Start Time  : " . $currentAppointmentTime . " , End time : $currentAppointmentEnds <br />";
+				if ($_SESSION{'adminDebug'}){
+					echo "<br/>Schedule Conflicts <br/>Prior appointment : StartTime = $startTime  , End time : $mashRange <br />";
+					
+					echo "<br />Current : <br />
+					Date : $currentAppointmentDate <br/>
+					Time : $currentAppointmentTime <br/>
+					Ends : $currentAppointmentEnds <br/>
+					";
+
 				}
 				
-				$_SESSION{'conflictiingSchedule'} = 1;
+				$_SESSION{'conflictingSchedule'} = 1;
 				
-			}				
+			}
 			
 			
 		}
@@ -755,6 +745,142 @@ function verifyAppontment($startTime , $hours , $ID) {
 	
 	
 }
+
+
+function verifyAddress(){	
+	
+		#WORKING
+	
+	
+	$address = "255 W State St";
+	$address2 = "";
+	$city = "Pasadena";
+	$state = "CA";
+	$urbanCode = "";
+	$postalCode = "";
+	$zipCode = "91105";
+	
+	
+	#
+	$badAddressIdentify = "/The address you provided/";
+	$address = preg_replace( "/[\s]+/" , "+" , $address);
+	$address2 = preg_replace( "/[\s]+/" , "+" , $address2);
+	$city = preg_replace( "/[\s]+/" , "+" , $city);	
+
+	$ct = curl_init("https://tools.usps.com/go/ZipLookupResultsAction!input.action?resultMode=1&companyName=&address1=$address&address2=$address2&city=$city&state=$state&urbanCode=$urbanCode&postalCode=$postalCode&zip=$zip");
+	
+	curl_setopt($ct, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ct, CURLOPT_BINARYTRANSFER, true);
+	$content = curl_exec($ct);
+	curl_close($ct);
+	
+	if (preg_match( $badAddressIdentify  , $content  )){
+		
+		echo "Error verifying address";
+		
+	}else{
+		
+		echo "Address found <br />";
+	
+
+		#echo $content;
+		
+		$i = 0;
+		
+		$separator = "\r\n";
+		$line = strtok($content, $separator);
+		$informationCt =0;
+		
+		$storedHTML = array();
+		while ($line !== false) {
+			# do something with $line
+			$line = strtok( $separator );
+			
+			if (preg_match("/\<div class=\"data\"\>/" , $line) || $i){
+				
+				if ($i < 14){
+					
+					
+					
+					if ($line){
+						
+						$informationCt++;
+						#echo "<p>Result = " . htmlentities($line) . "    ,    Information CT = $informationCt</p><br/>";
+						
+						
+						array_push ($storedHTML , $line );
+						
+						if (preg_match( "<span class=\"address1 range\">" , $line)){
+							
+							echo "<br/>Found address line";
+							
+						}
+						
+					}
+					
+					$i++;
+					
+				}
+				
+			}			
+				
+		}
+		
+		$addressLine = $storedHTML['7'];
+		$addressInfo = $storedHTML['10'];
+		
+		#echo "<br/>Address Line = (" . htmlentities( $addressLine) . ")<br>";
+		#echo "<br/>Address Info = " . htmlentities( $addressInfo) . "<br>";
+		
+		preg_match( "/>(.+)</" ,$addressLine , $matches);
+		
+		#echo "<br/>Address line matches = " . htmlentities( print_r($matches));
+		
+		
+		
+
+		$addressInfoArray  = explode( "</span>" , $addressInfo );
+		
+		#echo "Explode : " . htmlentities( print_r ($addressInfoArray)) . "<br/><br/><br/>";
+		
+		
+		$addressLine = preg_replace ( "/<\/span><br \/>/" , "", $addressLine);
+		$addressLine = preg_replace ( "/<.+>/" , "", $addressLine);
+		$cityFound   = preg_replace ( "/<.+>/" , "", $addressInfoArray[0]);
+		$stateFound  = preg_replace ( "/<.+>/" , "",  $addressInfoArray[1]);
+		$zipFound    = preg_replace ( "/<.+>/" , "",  $addressInfoArray[2]);
+		$hyphen   	 = preg_replace ( "//" , "",  $addressInfoArray[3]);
+		$zipExtras   = preg_replace ( "/<.+>/" , "",  $addressInfoArray[4]);
+		
+		if ($zipExtras){
+			$zipFound .= "-"  .  $zipExtras;
+			
+		}
+		
+		
+		echo "<br/>Street found = " . (htmlentities($addressLine)) . "<br/>";
+		echo "<br/>City found = " . (htmlentities($cityFound)) . "<br/>";
+		echo "<br/>State Found = " . (htmlentities($stateFound)) . "<br/>";
+		echo "<br/>Zip Found = " . (htmlentities($zipFound)) ;
+		
+		
+		
+		
+		
+		
+		#echo "<br/><br/>DUMP " . print_r($storedHTML) . "<br/>";
+		
+		$addressfound = 1;
+		
+		
+		
+		
+	}
+	
+	return $addressFound;
+	
+}
+	
 
 
 

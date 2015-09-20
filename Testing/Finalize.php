@@ -292,7 +292,7 @@
 			
 			if ($_SESSION{'conflictingSchedule'}){
 				?>
-				<p class="text">Oops, it looks like the appointment time is not available. Please modify your appointment below. </p>
+				<p class="text">A few more details and we can complete your booking. </p>
 				<?
 			}else{
 				?>
@@ -350,15 +350,9 @@
 			<?
 				
 			if ($_SESSION{'conflictingSchedule'}){
-				
-				if ($_SESSION{'adminDebug'}){
-				
-					showAvailableAppointmentTimes();
-					
-				}
 
-				?>			
-				
+				?>
+				<br /><br />
 				<div id="sizeOverlay">
 					<div id="coverUpTransparrently"></div>
 				<?
@@ -633,177 +627,6 @@ if (0)
 	
 	
 */
-
-
-function showAvailableAppointmentTimes() {
-	
-	echo "In development";
-	echo "<br />";	
-	if ($_SESSION{'adminDebug'}){	
-		
-		echo "<br/>FUNC-  START APPOINTMENT CHECK";
-		
-		echo "<br/>Set admin debug";
-		
- 	}	
-	connectSQL();
-	$day = date ("d") +1; 		
-	if ($day < 10 ){
-		
-		$day = "0" . $day;
-	}	
-	#echo "Day = $day";	
-	#0000 indicates The time of day 	
-	$tomorrowsDateMash  =  date ("Ym") . $day. "0000";
-	$sql = "SELECT Mash, Hours, ID FROM quotes WHERE Mash > $tomorrowsDateMash";	
-	#201509170000    versus
-	#201509171200
-	$result = mysql_query ($sql);
-	$futureAppointments = array();
-	
-	if (0){
-		
-		#DEBUG
-		echo "Quote Number =  " . 	$_SESSION{'lastQuoteNumber'};
-		echo "Quote Details = " . $_SESSION{'lastQuoteMash'};
-		echo "Quote hrs = " . $_SESSION{'lastQuoteHRS'} . "<br/>";
-
-	}
-	$counter = 0;
-	
-	$priorAppointments = array ();
-	while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
-		
-		$mash = $row{'Mash'};
-		$hours = $row{'Hours'};			
-		$ID = $row{'ID'};	
-		
-		
-		// 	DEBUG
-		if ($_SESSION{'adminDebug'} && !$_SESSION{'conflictingSchedule'}){
-			
-			echo "<br/>Conflicting Schedule = " . $_SESSION{'conflictingSchedule'};			
-			echo "<br/>Prior mash = "  . $mash ;
-			echo "   HOURS  = "  . $hours;
-			echo "   ID = "  . $ID . "<br/><br/>";
-			
-		}		
-		
-		verifyAppontment3Day($mash , $hours , $ID); // This checks for time availibility of a single (mash + hrs)
-		#echo "Org  -> Mash : $mash , Hours : $hours , ID : $ID<br />";		DEBUG
-		
-		$counter++;
-		
-	}
-	
-}
-
-
-function verifyAppontment3Day($startTime , $hours , $ID) {	
-
-
-	
-	if ($_SESSION{'adminDebug'}){
-		echo "<br/>Confl Found = " . $_SESSION{'conflictingSchedule'};
-	}
-	#	$_SESSION{'lastQuoteNumber'}
-	#	$_SESSION{'lastQuoteMash'}						
-	#	$_SESSION{'lastQuoteHRS'}
-	
-	global $currentQuoteShown;
-	
-	
-	#Todays (MASH)
-	$day = date ("d"); 
-		
-	if ($day < 10 ){
-		
-		$day = "0" . $day;
-	}
-	
-	$dayPlusOne = $day +1;
-	if ($day < 10 ){
-		
-		$dayPlusOne = "0" . $dayPlusOne;
-	}
-	
-	$dayPlusTwo = $day +2;
-	if ($day < 10 ){
-		
-		$dayPlusOne = "0" . $dayPlusOne;
-	}
-	
-	
-	
-	
-	
-	#echo "Day = $day";
-	
-	
-	#0000 indicates The time of day 
-	$todaysDateMash  =  date ("Ym") . $day. "0000";
-	$tomorrowDateMash  =  date ("Ym") . $dayPlusOne. "0000";
-	$thirdDateMash  =  date ("Ym") . $dayPlusOne. "0000";
-	
-	$threeDayMash = array ($todaysDateMash , $tomorrowDateMash , $thirdDateMash);
-	
-	
-	if (!$_SESSION{'conflictingSchedule'}){
-		
-		
-		$currentAppointmentDate = substr($_SESSION{'lastQuoteMash'}, 0 , 8);
-		$currentAppointmentTime = substr($_SESSION{'lastQuoteMash'}, 8 , 4);
-		$currentAppointmentEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
-		
-		if (!$currentQuoteShown ){
-			
-			
-			
-			if ($_SESSION{'adminDebug'}){
-				echo "<br />Current : <br />
-				Date : $currentAppointmentDate <br/>
-				Time : $currentAppointmentTime <br/>
-				Ends : $currentAppointmentEnds <br/>
-				";
-			}
-			
-			$currentQuoteShown = 1;
-		}
-		
-			
-		if ($_SESSION{'lastQuoteNumber'} != $ID){
-			
-			$priorApptStartDate = substr($startTime, 0 , 8);
-			$priorApptStartTime = substr($startTime, 8 , 4);
-			$priorApptStartEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
-						
-			$mashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);	#	$_SESSION{'lastQuoteMash'}	
-			
-			
-			
-			#	Start time 	vs start time 
-			if (($_SESSION{'lastQuoteMash'} >= $startTime  && $_SESSION{'lastQuoteMash'} <= $mashRange) ||  ($currentAppointmentEnds >= $startTime  && $currentAppointmentEnds <= $mashRange)){
-				if ($_SESSION{'adminDebug'}){
-					echo "<br/>Schedule Conflicts <br/>Prior appointment : StartTime = $startTime  , End time : $mashRange <br />";
-					
-					echo "<br />Current : <br />
-					Date : $currentAppointmentDate <br/>
-					Time : $currentAppointmentTime <br/>
-					Ends : $currentAppointmentEnds <br/>
-					";
-
-				}
-				
-				$_SESSION{'conflictingSchedule'} = 1;
-				
-			}
-			
-			
-		}
-	}
-	
-	
-}
 
 
 ?>

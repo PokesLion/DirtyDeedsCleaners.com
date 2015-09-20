@@ -21,23 +21,24 @@
 	<div id="main">
 		<div id="calendarContent">
 			<form action="scheduleDay.php" method="POST">
+				<?
+				$table = '
 				<table height="70%" cols="7" border="0" cellspacing="15">
 				
 				<td colspan="7"  id="appointmentHeader"><center><span  style="color:white" size="13"><font size="12">Appointment on day</font></center></td>
+				';		
 				
-				<?php
-				
-				showCalendar();
+				$table .= showCalendar();
+				$table .= '
+				</table>';
+				echo $table;
 				
 				?>
-				
-				</table>
 			</form>
 			<form action="scheduleAppointment.php" method="POST">
 				<center><input id="resetCalendar" type="submit" value="Reset" name="resetMonths" /> </center>
 			</form>
 		</div>	
-	
 	</div>	
 	<a id="buttonMonthPlus" href="moreMonths.php">			
 			>>>			
@@ -125,18 +126,15 @@ function showCalendar(){
 		
 	}
 	
-	echo "</tr>
+	$tableFunc = "</tr>
 		  <tr >
 		  
 			<td colspan=\"7\" id=\"monthHeader\" ><center><b>" . $selection{'monthName'} . " " . $selection{'year'}  . "</b></center></td>";
 	
 	
-	echo "			
+	$tableFunc .= "			
 	</tr>
-	";
-	
-	
-	
+	";	
 	 
 	 
 	$julianMonth = $selection{'month'};
@@ -157,7 +155,7 @@ function showCalendar(){
 	#Find todays date
 	$dayOfWeek[2] = getDayOfWeek($julianMonth , $julianDay , $julianYear);
 	
-	 echo "<tr  id=\"daysHeader\">";
+	 $tableFunc .=  "<tr  id=\"daysHeader\">";
 	 
 	 $daysOfWeek = array ('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 	 
@@ -165,11 +163,11 @@ function showCalendar(){
 	 
 	 for ($i = 0; $i < $numDays ; $i++){
 		 
-			echo "<td id=\"daysRow\"height=\"15px\"><center>" . $daysOfWeek[$i] .  "</center></td>";
+			$tableFunc .= "<td id=\"daysRow\"height=\"15px\"><center>" . $daysOfWeek[$i] .  "</center></td>";
 		 
 	 }
 	 
-	 echo "
+	 $tableFunc .= "
 	 </tr>
 	 
 	 <tr>
@@ -212,7 +210,7 @@ function showCalendar(){
 				 
 				 if ($selection{'date'} > $fullDate){				
 					
-					echo "			
+					$tableFunc .= "			
 					<td  width=\"7.14%\">
 						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mysubmitbutton\" type=\"submit\" class=\"customButton\">  
 							<div style=\"height:100%;width:100%\">
@@ -223,7 +221,7 @@ function showCalendar(){
 					
 			
 				}else{
-					echo "			
+					$tableFunc .= "			
 					<td  width=\"7.14%\">
 						<button type=\"button\" id=\"closedsubmitbutton\">				
 							<div style=\"height:100%;width:100%\">
@@ -244,7 +242,7 @@ function showCalendar(){
 					 
 				 }
 				 
-				 echo "
+				 $tableFunc .= "
 				 </tr>				 
 				 <tr> 
 				 ";
@@ -253,7 +251,7 @@ function showCalendar(){
 			 
 				if ($selection{'date'} > $fullDate){				
 					
-					echo "			
+					$tableFunc .= "			
 					<td  width=\"7.14%\">
 						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mysubmitbutton\" type=\"submit\" class=\"customButton\">  
 							<div style=\"height:100%;width:100%\">					
@@ -264,7 +262,7 @@ function showCalendar(){
 					
 			
 				}else{
-					echo "			
+					$tableFunc .= "			
 					<td  width=\"7.14%\">
 						<button type=\"button\" id=\"closedsubmitbutton\">				
 							<div style=\"height:100%;width:100%\">
@@ -281,14 +279,18 @@ function showCalendar(){
 			
 			
 			#Last Month Days
-			echo "			<td  width=\"7.14%\"><p id=\"mysubmitbutton\"></p></td>"; 
+			$tableFunc .= "			<td  width=\"7.14%\"><p id=\"mysubmitbutton\"></p></td>"; 
 			$offset++;
 			$min --;
 			
 			
 		} 
 	 }
-	 echo "</tr>";
+	 $tableFunc .= "</tr>";
+	 
+	 
+	 
+	 return $tableFunc;
 	 
 	 
 	

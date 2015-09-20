@@ -1,15 +1,35 @@
 <?php
 
 	
-
+	
+	
+	
 	#TODO VERIFY THE DATA IS PROPER BEFORE SAVING!
 	
 	include ('functions.php');
 	
 	$finalizeFileName = "Finalize.php";
 
-	session_start();
 	
+	
+	session_start();
+	$_SESSION{'conflictingSchedule'} = NULL;
+	
+	
+	
+	if ($_SESSION{'login'} == "admin@dirtydeedscleaners.com"){
+		
+		$debug = 0;
+		#disallows page rerouting  (enables reading of subsequent echo)
+		$_SESSION{'debug'} = $debug;
+		#allow echo debugs
+		$_SESSION{'adminDebug'} = 1;
+		
+	}else{
+		
+		$_SESSION{'debug'} = 0;
+		
+	}
 	
 	
 	#THis stops redirects when set to 1
@@ -93,9 +113,6 @@
 			
 		}
 		if ($zipCode && $hours && $startTime && $bedrooms && $bathrooms && $date){
-			
-			
-			
 			
 			
 			$date  = substr( $date , 6 ,4 ) . substr( $date , 0 ,2 ) .  substr( $date , 3 ,2 );		
@@ -190,18 +207,26 @@
 				
 			}	
 			chmod($newFile, 0755);			
-			#echo 	"NewFilePerms $newFile = " . fileperms($newFile) . "<br/><br/>";									
-			
-			
-		
-				
-			
+			#echo 	"NewFilePerms $newFile = " . fileperms($newFile) . "<br/><br/>";
 				
 		}	
-		# Checkout.php is currently the default - TODO , BUILD A NEW FORMAT OF CHECKOUT
+		# Checkout.php is currently the default - TODO , BUILD A NEW FORMAT OF CHECKOUT	
+		startAppointmentCheck ();		
 		
-		
-		startAppointmentCheck ();
+		if($_SESSION{'conflictingSchedule'}){
+			
+			#	echo "<br/>Deleting conflictiong entry";			
+			$_SESSION{'LastQuoteDate'} = substr($_SESSION{'lastQuoteMash'}, 0 , 8);			
+			$sql = "DELETE FROM quotes WHERE ID =\"" .  $_SESSION{'lastQuoteNumber'}   . "\" ; ";					
+			mysql_query ($sql);			
+			#	echo "<br />SQL : " . $sql; 
+			
+			
+			
+		}else{
+			
+			$_SESSION{'SESSIONQuotes'}  .= $_SESSION{'lastQuoteNumber'} . " ";
+		}
 		
 		
 		if (0){
@@ -218,15 +243,15 @@
 			$_SESSION{'dateWorkRequest'} 	= NULL;
 			
 		}
-		
+		urlAssign($structure . $finalizeFileName);
 		
 		
 		#echo "Hours = " . $_SESSION{'lastQuoteHRS'} . "<br />";
 
 		
 		
-			
-		urlAssign($structure . $finalizeFileName);
+	
+		
 		
 		
 		
