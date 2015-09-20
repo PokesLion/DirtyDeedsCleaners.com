@@ -1663,7 +1663,17 @@ select:focus{
 	
 	
 }
-
+#availableAppt{
+	
+	
+	border:solid green 1px;
+	border-radius:5px;
+	font-size:15;
+	font-weight:bold;
+	text-align:center;
+	color:green;
+	
+}
 #availableAppt:hover{
 	
 	
