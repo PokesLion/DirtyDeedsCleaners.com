@@ -274,7 +274,7 @@
 			$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " PM";
 			
 		}
-		$_SESSION{'dateTimeAppointment'} = $_SESSION{'dateWorkRequest'} . " @ ". $startTimeFormatted
+		$_SESSION{'dateTimeAppointment'} = $_SESSION{'dateWorkRequest'} . " @ ". $startTimeFormatted;
 		
 	?>
 
@@ -292,7 +292,7 @@
 			
 			if ($_SESSION{'conflictingSchedule'}){
 				?>
-				<p class="text">Oops, it looks like the appointment time is not available. Please modify your appointment below. </p>
+				<p class="text">Please choose a different time <br/>Due to high demand, we don't have availability at that time. Please choose a different time below. </p>
 				<?
 			}else{
 				?>
@@ -300,51 +300,11 @@
 				<?
 			}
 			
-			
-			
 			?>
 			
+			<br />				<hr>				<br />
 		</center>
-		<br />
-		<hr>
-		<br />
-		<p class="text" style="text-align:left"><b>How Often?</b></p>
-		<br />
 		
-		<form action="processCheckout.php" method="post" name="form">
-			<!--
-			<button type="button" class="cleanButton" id="frequency1" ><div class="selectButton">Every Week</div></button>
-			<button type="button" class="cleanButton" id="frequency2" value="2" ><div class="selectButton">Every 2 Weeks</div></button>
-			<button type="button" class="cleanButton" id="frequency3" ><div class="selectButton">Every 4 Weeks</div></button>
-			
-			-->
-			
-			<fieldset onclick="alertRadio()">
-			  
-			  <div class="fieldgroup">
-				  <label for="once">
-					<input type="radio" value="1" name="frequency" id="once"> <span>Once</span>
-				  </label>
-			  </div>
-			  <div class="fieldgroup">
-				  <label for="weekly">
-					<input type="radio" value="2" name="frequency" id="weekly"> <span>Every Week</span>
-				  </label>
-			  </div>
-				<div class="fieldgroup">
-			  <label for="twoWeeks">
-				<input type="radio" value="3" name="frequency" id="twoWeeks" checked> <span>Every 2 Weeks</span>
-			  </label>
-				</div>
-				<div class="fieldgroup">
-			  <label for="fourWeeks">
-				<input type="radio" value="4"  name="frequency" id="fourWeeks"><span>Every 4 Weeks</span>
-			  </label>
-			  </div>
-			</fieldset>
-			<br />
-			<br />
-			<hr>
 		
 			
 			<?
@@ -353,127 +313,145 @@
 				
 				if ($_SESSION{'adminDebug'}){
 				
-					showAvailableAppointmentTimes();
-					
-				}
-
-				?>			
-				
-				<div id="sizeOverlay">
-					<div id="coverUpTransparrently"></div>
-				<?
-			}
+					verifyAppontment3Day();
+					?>
+					<br><br><br>
+					<?
+				}			
+			}else{
 			?>
-			<br />
 			
-			<p class="text" style="text-align:left"><b>Address</b></p>
-			<p class="text">
+				
+				<p class="text" style="text-align:left"><b>How Often?</b></p>
+				<br />				
+				<form action="processCheckout.php" method="post" name="form">				
+					<fieldset onclick="alertRadio()">					  
+					  <div class="fieldgroup">
+						  <label for="once">
+							<input type="radio" value="1" name="frequency" id="once"> <span>Once</span>
+						  </label>
+					  </div>
+					  <div class="fieldgroup">
+						  <label for="weekly">
+							<input type="radio" value="2" name="frequency" id="weekly"> <span>Every Week</span>
+						  </label>
+					  </div>
+						<div class="fieldgroup">
+					  <label for="twoWeeks">
+						<input type="radio" value="3" name="frequency" id="twoWeeks" checked> <span>Every 2 Weeks</span>
+					  </label>
+						</div>
+						<div class="fieldgroup">
+						  <label for="fourWeeks">
+							<input type="radio" value="4"  name="frequency" id="fourWeeks"><span>Every 4 Weeks</span>
+						  </label>
+					  </div>
+					</fieldset>
+					<br />
+					<br />
+					<hr>
+					<br />
+					
+					<p class="text" style="text-align:left"><b>Address</b></p>
+					<p class="text">
 
-				<table cellspacing="5">
-					<tr>
-						<td>Street Address</td><td></td><td>Apt #</td>
-					</tr>
-					<tr>
-						<td><input required class="inputPadding" type="text" name="address" size="30" /></td><td width="20"></td><td><input class="inputPadding"  type="text" name="apartment" size="20" /><td>
-					</tr>
-					<tr>
-						<td>City</td><td></td><td>State</td>
-					</tr>
-					<tr>
-						<td><input required  class="inputPadding"  type="text" name="city" size="30" /></td><td width="20"></td><td><input   required class="inputPadding" type="text" name="state" size="20" /></td>
-					</tr>
-					<tr>
-						<td>Phone</td><td></td>
-					</tr>
-					<tr>
-						<td><input required  class="inputPadding"  type="tel" name="phone" size="30" /></td>
-					</tr>
-					<tr>	
-						<td>Promo Code</td><td></td>
-					</tr>	
-					<tr>
-						<td><input class="inputPadding"  type="text" name="promo" size="30" /></td>
-					</tr>
-				</table>
+						<table cellspacing="5">
+							<tr>
+								<td>Street Address</td><td></td><td>Apt #</td>
+							</tr>
+							<tr>
+								<td><input required class="inputPadding" type="text" name="address" size="30" /></td><td width="20"></td><td><input class="inputPadding"  type="text" name="apartment" size="20" /><td>
+							</tr>
+							<tr>
+								<td>City</td><td></td><td>State</td>
+							</tr>
+							<tr>
+								<td><input required  class="inputPadding"  type="text" name="city" size="30" /></td><td width="20"></td><td><input   required class="inputPadding" type="text" name="state" size="20" /></td>
+							</tr>
+							<tr>
+								<td>Phone</td><td></td>
+							</tr>
+							<tr>
+								<td><input required  class="inputPadding"  type="tel" name="phone" size="30" /></td>
+							</tr>
+							<tr>	
+								<td>Promo Code</td><td></td>
+							</tr>	
+							<tr>
+								<td><input class="inputPadding"  type="text" name="promo" size="30" /></td>
+							</tr>
+						</table><br />					
+					</p>
+					<br />
+					<hr>
+					<p class="text">
+						<br />
+						<b>Extras</b>
+						<br />
+						<table id="checkoutExtras" width="100%">
+						<td height="100">
+							<input id="cabinetInput" name="cabinet" type="hidden" value="0" /> 
+							<div onclick="onOffID(this)" class="0" id="cabinet" style="width:100%;height:100%;background-color:#66A3FF">
+								<div class="whiteBackgroundCircle"><br /><br />Inside <br />cabinets
+								</div>
+							</div>
+						</td>
+						<td height="100">
+							<input id="fridgeInput" name="fridge" type="hidden" value="0" /> 
+							<div onclick="onOffID(this)" class="0"  id="fridge" style="width:100%;height:100%;background-color:#66A3FF">
+								<div class="whiteBackgroundCircle"><br /><br />Inside <br />fridge
+								</div></div>
+						</td>
+						<td height="100">
+							<input id="ovenInput" name="oven" type="hidden" value="0" /> 
+							<div onclick="onOffID(this)" class="0"  id="oven" style="width:100%;height:100%;background-color:#66A3FF">
+								<div class="whiteBackgroundCircle"><br /><br />Inside <br />oven
+								</div></div>
+						</td>
+						<td height="100">
+							<input id="laundryInput" name="laundry" type="hidden" value="0" /> 
+							<div onclick="onOffID(this)" class="0"  id="laundry" style="width:100%;height:100%;background-color:#66A3FF">
+								<div class="whiteBackgroundCircle"><br /><br />Laundry <br />wash & dry
+								</div>
+							</div>
+						</td>
+						<td height="100">
+							<input id="interiorWindowsInput" name="window" type="hidden" value="0" /> 
+							<div onclick="onOffID(this)" class="0"  id="interiorWindows" style="width:100%;height:100%;background-color:#66A3FF">
+								<div class="whiteBackgroundCircle"><br /><br />Interior <br />windows
+								</div>
+							</div>
+						</td>
+						
+					
+						
+						</table>
+					</p>
+					<br />
+					<hr>
+					<br />	
 				
-				
-				
-				<br />
-				
-				
-			</p>
-			<br />
-			<hr>
-			<p class="text">
-				<br />
-				<b>Extras</b>
-				<br />
-				<table id="checkoutExtras" width="100%">
-				<td height="100">
-					<input id="cabinetInput" name="cabinet" type="hidden" value="0" /> 
-					<div onclick="onOffID(this)" class="0" id="cabinet" style="width:100%;height:100%;background-color:#66A3FF">
-						<div class="whiteBackgroundCircle"><br /><br />Inside <br />cabinets
-						</div>
-					</div>
-				</td>
-				<td height="100">
-					<input id="fridgeInput" name="fridge" type="hidden" value="0" /> 
-					<div onclick="onOffID(this)" class="0"  id="fridge" style="width:100%;height:100%;background-color:#66A3FF">
-						<div class="whiteBackgroundCircle"><br /><br />Inside <br />fridge
-						</div></div>
-				</td>
-				<td height="100">
-					<input id="ovenInput" name="oven" type="hidden" value="0" /> 
-					<div onclick="onOffID(this)" class="0"  id="oven" style="width:100%;height:100%;background-color:#66A3FF">
-						<div class="whiteBackgroundCircle"><br /><br />Inside <br />oven
-						</div></div>
-				</td>
-				<td height="100">
-					<input id="laundryInput" name="laundry" type="hidden" value="0" /> 
-					<div onclick="onOffID(this)" class="0"  id="laundry" style="width:100%;height:100%;background-color:#66A3FF">
-						<div class="whiteBackgroundCircle"><br /><br />Laundry <br />wash & dry
-						</div>
-					</div>
-				</td>
-				<td height="100">
-					<input id="interiorWindowsInput" name="window" type="hidden" value="0" /> 
-					<div onclick="onOffID(this)" class="0"  id="interiorWindows" style="width:100%;height:100%;background-color:#66A3FF">
-						<div class="whiteBackgroundCircle"><br /><br />Interior <br />windows
-						</div>
-					</div>
-				</td>
-				
-			
-				
-				</table>
-			</p>
-			<br />
-			<hr>
-			<br />	
-			
 					<p class="text">
 						<b>Payment</b>
-							<table onclick="showHideCCPayment()" cellspacing="5">
-								<tr>
-									<td><label for="pmtCash"><input id="pmtCash"type="radio" name="paymentType" value="1" required /><span>Cash/Check</span></label></td>
-								</tr>
-								<tr>
-									<td><label for="pmtCC"><input id="pmtCC" type="radio" name="paymentType" value="2"  required /><span>Credit Card</span></label></td>
-								</tr>
-							</table>
-							<table id="toggleRemove" class="remove">
-							
-								<td>Credit Card Number</td>
-								<tr />					
-								<td><input id="reqHidden1" class="inputPadding"  type="text" name="ccard" size="30" /></td><td width="20"></td>					
-								<tr />
-								<td>Expiration</td><td></td><td>Security Code</td>					
-								<tr />
-								<td><input id="reqHidden2"  class="inputPadding" type="text" name="expiration" size="5" placeholder="MM/YY"/></td>
-								<td width="20"></td>
-								<td><input id="reqHidden3"  class="inputPadding"  type="text" name="securityCode" size="20" placeholder="CVC" /></td>
-
-							</table>
+						<table onclick="showHideCCPayment()" cellspacing="5">
+							<tr>
+								<td><label for="pmtCash"><input id="pmtCash"type="radio" name="paymentType" value="1" required /><span>Cash/Check</span></label></td>
+							</tr>
+							<tr>
+								<td><label for="pmtCC"><input id="pmtCC" type="radio" name="paymentType" value="2"  required /><span>Credit Card</span></label></td>
+							</tr>
+						</table>
+						<table id="toggleRemove" class="remove">							
+							<td>Credit Card Number</td>
+							<tr />					
+							<td><input id="reqHidden1" class="inputPadding"  type="text" name="ccard" size="30" /></td><td width="20"></td>					
+							<tr />
+							<td>Expiration</td><td></td><td>Security Code</td>					
+							<tr />
+							<td><input id="reqHidden2"  class="inputPadding" type="text" name="expiration" size="5" placeholder="MM/YY"/></td>
+							<td width="20"></td>
+							<td><input id="reqHidden3"  class="inputPadding"  type="text" name="securityCode" size="20" placeholder="CVC" /></td>
+						</table>
 					</p>
 					<br />			<hr>						<br />
 					<p class="text">
@@ -481,18 +459,13 @@
 					<p class="text">
 					<center><input id="sub" type="submit" name="completeOrder" value="Complete Booking"/> </center>
 					</p>
-			
+				</form>	
 			
 			<?
-			if ($_SESSION{'conflictingSchedule'}){
-
-				?>
-					
-				</div>
-				<?
+			
 			}
+				
 			?>
-		</form>	
 	</div>
 	
 	<?
@@ -548,16 +521,16 @@
 	
 
 
-htmlEnd();
+	htmlEnd();
 
-if (0)
-{
-		// should clear this soon
-	$_SESSION{'lastQuoteMash'} = NULL;					
-	$_SESSION{'lastQuoteSTART'} = NULL;
-	$_SESSION{'lastQuoteHRS'} = NULL;
-	
-}
+	if (0)
+	{
+			// should clear this soon
+		$_SESSION{'lastQuoteMash'} = NULL;					
+		$_SESSION{'lastQuoteSTART'} = NULL;
+		$_SESSION{'lastQuoteHRS'} = NULL;
+		
+	}
 
 
 
@@ -633,21 +606,10 @@ if (0)
 	
 	
 */
-
-
-function showAvailableAppointmentTimes() {
+function showAvailableAppointmentTimes() {	
 	
-	echo "In development";
-	echo "<br />";	
-	if ($_SESSION{'adminDebug'}){	
-		
-		echo "<br/>FUNC-  START APPOINTMENT CHECK";
-		
-		echo "<br/>Set admin debug";
-		
- 	}	
 	connectSQL();
-	$day = date ("d") +1; 		
+	$day = date ("d") + 1; 		
 	if ($day < 10 ){
 		
 		$day = "0" . $day;
@@ -657,40 +619,16 @@ function showAvailableAppointmentTimes() {
 	$tomorrowsDateMash  =  date ("Ym") . $day. "0000";
 	$sql = "SELECT Mash, Hours, ID FROM quotes WHERE Mash > $tomorrowsDateMash";	
 	#201509170000    versus
-	#201509171200
+	#201509171200	
+	$futureAppointments = array();	
+	$counter = 0;	
+	$sql = "SELECT Mash, Hours, ID FROM quotes WHERE Mash > $tomorrowsDateMash";	
 	$result = mysql_query ($sql);
-	$futureAppointments = array();
-	
-	if (0){
-		
-		#DEBUG
-		echo "Quote Number =  " . 	$_SESSION{'lastQuoteNumber'};
-		echo "Quote Details = " . $_SESSION{'lastQuoteMash'};
-		echo "Quote hrs = " . $_SESSION{'lastQuoteHRS'} . "<br/>";
-
-	}
-	$counter = 0;
-	
-	$priorAppointments = array ();
 	while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
 		
 		$mash = $row{'Mash'};
 		$hours = $row{'Hours'};			
-		$ID = $row{'ID'};	
-		
-		
-		// 	DEBUG
-		if ($_SESSION{'adminDebug'} && !$_SESSION{'conflictingSchedule'}){
-			
-			echo "<br/>Conflicting Schedule = " . $_SESSION{'conflictingSchedule'};			
-			echo "<br/>Prior mash = "  . $mash ;
-			echo "   HOURS  = "  . $hours;
-			echo "   ID = "  . $ID . "<br/><br/>";
-			
-		}		
-		
-		verifyAppontment3Day($mash , $hours , $ID); // This checks for time availibility of a single (mash + hrs)
-		#echo "Org  -> Mash : $mash , Hours : $hours , ID : $ID<br />";		DEBUG
+		$ID = $row{'ID'};
 		
 		$counter++;
 		
@@ -699,108 +637,217 @@ function showAvailableAppointmentTimes() {
 }
 
 
-function verifyAppontment3Day($startTime , $hours , $ID) {	
+function verifyAppontment3Day() {	
 
 
 	
-	if ($_SESSION{'adminDebug'}){
-		echo "<br/>Confl Found = " . $_SESSION{'conflictingSchedule'};
-	}
 	#	$_SESSION{'lastQuoteNumber'}
 	#	$_SESSION{'lastQuoteMash'}						
 	#	$_SESSION{'lastQuoteHRS'}
 	
 	global $currentQuoteShown;
 	
-	
 	#Todays (MASH)
 	$day = date ("d"); 
-		
-	if ($day < 10 ){
-		
-		$day = "0" . $day;
-	}
 	
 	$dayPlusOne = $day +1;
-	if ($day < 10 ){
+	
+	if ($dayPlusOne < 10 ){
 		
 		$dayPlusOne = "0" . $dayPlusOne;
 	}
 	
 	$dayPlusTwo = $day +2;
-	if ($day < 10 ){
+	if ($dayPlusTwo < 10 ){
 		
-		$dayPlusOne = "0" . $dayPlusOne;
+		$dayPlusTwo = "0" . $dayPlusTwo;
 	}
 	
-	
-	
-	
+	$dayPlusThree = $day +3;
+	if ($dayPlusThree < 10 ){
+		
+		$dayPlusThree = "0" . $dayPlusThree;
+	}
 	
 	#echo "Day = $day";
-	
-	
 	#0000 indicates The time of day 
-	$todaysDateMash  =  date ("Ym") . $day. "0000";
+	
 	$tomorrowDateMash  =  date ("Ym") . $dayPlusOne. "0000";
-	$thirdDateMash  =  date ("Ym") . $dayPlusOne. "0000";
+	$secondDateMash  =  date ("Ym") . $dayPlusTwo. "0000";
+	$thirdDateMash  =  date ("Ym") . $dayPlusThree. "0000";
 	
-	$threeDayMash = array ($todaysDateMash , $tomorrowDateMash , $thirdDateMash);
+	$threeDayMash = array ($tomorrowDateMash , $secondDateMash , $thirdDateMash);  // Iterates each day
 	
 	
-	if (!$_SESSION{'conflictingSchedule'}){
+	// Now for each day check the availability for every 3 hour window
+	$windows =  array  ("0700" , "1000","1300","1600","1900");
+	
+	
+	?>			
+	<div style="position:relative;float:center;width:auto;height:400;left:70px">
+		<table height="100%" align="middle">
+			<td height="100%" valign="middle"><a href="" style="float:left;font-size:20;"><div style="height:100%;width:100%;"> < </div></a></td>
+			<td>
+	<?
+	
+	foreach ($threeDayMash as $dayMash){
 		
 		
-		$currentAppointmentDate = substr($_SESSION{'lastQuoteMash'}, 0 , 8);
-		$currentAppointmentTime = substr($_SESSION{'lastQuoteMash'}, 8 , 4);
-		$currentAppointmentEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
+		#Start Table for Days
+		$day = substr ($dayMash , 0 , 8);
+		#echo "<br />Day mash = " . $dayMash;
+		$dayFormatted = substr($day  , 4 ,2 ) . "/" . substr($day  , 6 ,2 ) . "/" . substr($day  , 0 , 4 );
 		
-		if (!$currentQuoteShown ){
+
+		if ($dayMash == $tomorrowDateMash){				
 			
+			echo '<table width="150px" style="float:left;position:relative;text-align:center;" >
+			';
+			echo '	<td width="100%" height="50px" ><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
+			';
 			
+		}else{			
+		
+			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:10px" >
+			';
+			#echo '<table style="float:left;position:relative;left:33%">';
+			echo '	<td width="100%" height="50px"><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
+			';
 			
-			if ($_SESSION{'adminDebug'}){
-				echo "<br />Current : <br />
-				Date : $currentAppointmentDate <br/>
-				Time : $currentAppointmentTime <br/>
-				Ends : $currentAppointmentEnds <br/>
-				";
-			}
-			
-			$currentQuoteShown = 1;
 		}
 		
+		$dayStore = $dayMash;	
+		#Connect to sql to check for appointments on that day
+		
+		connectSQL();		
+		#echo "Day = $day";	
+		#0000 indicates The time of day 			
+		$sql = "SELECT Mash, Hours, ID FROM quotes WHERE Date = '$day'";
+		
+		#echo "<br/>SQL = $sql";
+		#201509170000    versus
+		#201509171200
+		$counter = 0;	
+		$result = mysql_query ($sql);
+		
+		#CHECK FOR RESULT
+		if (!$result){
 			
-		if ($_SESSION{'lastQuoteNumber'} != $ID){
+			echo "Nothing to show for  : $dayMash ";
 			
-			$priorApptStartDate = substr($startTime, 0 , 8);
-			$priorApptStartTime = substr($startTime, 8 , 4);
-			$priorApptStartEnds =  $currentAppointmentDate . ( $currentAppointmentTime + 100 * $_SESSION{'lastQuoteHRS'} ) ;
-						
-			$mashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);	#	$_SESSION{'lastQuoteMash'}	
+		}	
+		
+		foreach ($windows as $time ){
 			
 			
-			
-			#	Start time 	vs start time 
-			if (($_SESSION{'lastQuoteMash'} >= $startTime  && $_SESSION{'lastQuoteMash'} <= $mashRange) ||  ($currentAppointmentEnds >= $startTime  && $currentAppointmentEnds <= $mashRange)){
-				if ($_SESSION{'adminDebug'}){
-					echo "<br/>Schedule Conflicts <br/>Prior appointment : StartTime = $startTime  , End time : $mashRange <br />";
-					
-					echo "<br />Current : <br />
-					Date : $currentAppointmentDate <br/>
-					Time : $currentAppointmentTime <br/>
-					Ends : $currentAppointmentEnds <br/>
-					";
+			$windowOpenBool = 1;
+			//Sets the window that we want to see availabiliy of 
+			$appointmentWindowTime = $day . $time; 
+			$appointmentWindowEnds = $day . ($time + 300);	
 
+			$_SESSION{'adminDebug'} = 0;
+			
+			mysql_data_seek($result, 0);
+			while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
+			
+				$mash = $row{'Mash'};
+				$hours = $row{'Hours'};			
+				$ID = $row{'ID'};		
+
+				#echo "<br/>RAW DATA 2: Mash : $mash , Hours : $hours , ID : $ID";
+				
+				//Sets the variables of data from the SQL database
+				
+				$priorApptMash 		= $mash;				 
+				$priorApptStartDate = substr($mash, 0 , 8);				
+				$priorApptStartTime = substr($mash, 8 , 4);
+				$priorApptmashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);		
+				
+				
+				#DEBUG THIS 
+				if ($_SESSION{'adminDebug'}){
+				
+					echo "<br/>MATH : 
+						This Window : ($appointmentWindowTime - $appointmentWindowEnds )<br/>
+						Prior Apt   : ($priorApptMash - $priorApptmashRange)<br/>";
+				}
+				if (($appointmentWindowTime > $priorApptMash  && $appointmentWindowTime < $priorApptmashRange) ||  ($appointmentWindowEnds > $priorApptMash  && $appointmentWindowEnds < $priorApptmashRange)){
+				
+					$windowOpenBool = 0;
+					if ($_SESSION{'adminDebug'}){
+						#echo "<br/>Unavailable <br/>Prior appointment : StartTime = $priorApptMash  , End time : $priorApptmashRange <br />";
+						if ($_SESSION{'adminDebug'}){
+							echo "<p style=\"border:1px solid red\">Unavailable <p style=\"border:1px solid red\">Window Opening /Close: <br />
+								Date : $day <br/>
+								Time : $appointmentWindowTime <br/>
+								Ends : $appointmentWindowEnds <br/></p>
+								<p style=\"border:1px solid red\">Prior Appointment: <br />
+								Date : $day <br/>
+								Time : $priorApptMash <br/>
+								Ends : $priorApptmashRange <br/></p></p>						
+							";
+						}
+
+					}				
+				}else{
+					if ($_SESSION{'adminDebug'}){
+						echo "<p style=\"border:1px solid black\">Available<p style=\"border:1px solid black\">Window Opening /Close: <br />
+								Date : $day <br/>
+								Time : $appointmentWindowTime <br/>
+								Ends : $appointmentWindowEnds <br/></p>
+								<p style=\"border:1px solid black\">Prior Appointment: <br />
+								Date : $day <br/>
+								Time : $priorApptMash <br/>
+								Ends : $priorApptmashRange <br/></p></p>						
+							";
+					}
+					
 				}
 				
-				$_SESSION{'conflictingSchedule'} = 1;
+				
+				
+				$counter++;
 				
 			}
 			
+			preg_replace( "/:/" , "" , $time);
+			if ($time < 1200){
+				$suffix = " AM";
+			}else{
+				
+				$time = substr($time , 0 , 2) - 12;
+				$suffix = " PM";
+				
+			}		
+			
+			$timeOfDay = substr ($time , 0 , 2) *1 . $suffix;
+			
+			if ($windowOpenBool){
+				
+				echo '	<td id="availableAppt"  width="100%" height="50px" style="border:solid green 1px;border-radius:5px;"><span style="color:green;background-color:white;font-size:15;font-weight:bold;text-align:center">' .  $timeOfDay . ' </span></td><tr/>
+				';
+				
+			}else{
+				echo '	<td width="100%" height="50px" style="border:solid grey 1px;border-radius:5px;"><span style="color:grey;background-color:white;font-size:15;font-weight:bold;text-align:center"> Unavailable</span></td><tr/>
+				';
+				
+			}
+		
 			
 		}
+		echo "</table>";
+		
+		
 	}
+	
+	?>			
+		</td>
+		<td height="100%" valign="middle"><a href="" style="float:left;font-size:20;"><div style="height:100%;width:100%;"> > </div></a></td>
+		</table>
+	</div>
+	
+	
+	<?
 	
 	
 }

@@ -199,7 +199,7 @@
 			
 			//  PUT THE DISPLAY FILES IN THE SUB FOLDER
 			
-			$file = "./checkout.php";
+			$file = "./$finalizeFileName";
 			$newFile = './quotes/' . $ID . "/$finalizeFileName";			
 
 			if (!copy($file, $newFile)) {
