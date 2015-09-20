@@ -288,7 +288,7 @@
 			
 			<?
 			
-			echo "<br />Conflicting appointment  = " . $_SESSION{'conflictingSchedule'} . "<br/>";
+			#echo "<br />Conflicting appointment  = " . $_SESSION{'conflictingSchedule'} . "<br/>";
 			
 			if ($_SESSION{'conflictingSchedule'}){
 				?>
@@ -311,16 +311,13 @@
 				
 			if ($_SESSION{'conflictingSchedule'}){
 				
-				if ($_SESSION{'adminDebug'}){
-				
-					verifyAppontment3Day();
-					?>
-					<br><br><br>
-					<?
-				}			
+				verifyAppontment3Day();
+				?>
+				<br><br><br>
+				<?
+						
 			}else{
-			?>
-			
+				?>
 				
 				<p class="text" style="text-align:left"><b>How Often?</b></p>
 				<br />				
@@ -354,7 +351,6 @@
 					
 					<p class="text" style="text-align:left"><b>Address</b></p>
 					<p class="text">
-
 						<table cellspacing="5">
 							<tr>
 								<td>Street Address</td><td></td><td>Apt #</td>
@@ -422,9 +418,6 @@
 								</div>
 							</div>
 						</td>
-						
-					
-						
 						</table>
 					</p>
 					<br />
@@ -684,9 +677,9 @@ function verifyAppontment3Day() {
 	
 	
 	?>			
-	<div style="position:relative;float:center;width:auto;height:400;left:70px">
+	<div style="position:relative;float:center;width:auto;height:400;left:50px">
 		<table height="100%" align="middle">
-			<td height="100%" valign="middle"><a href="" style="float:left;font-size:20;"><div style="height:100%;width:100%;"> < </div></a></td>
+			<td height="100%" width="10px" valign="middle" style="position:relative;float:left;font-size:20;top:25px;"><center><a href="" ><div style="height:100%;width:100%;font-size:30"> < </div></a></center></td>
 			<td>
 	<?
 	
@@ -706,7 +699,7 @@ function verifyAppontment3Day() {
 			echo '	<td width="100%" height="50px" ><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
 			';
 			
-		}else{			
+		}elseif($dayMash == $secondDateMash){			
 		
 			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:10px" >
 			';
@@ -714,7 +707,16 @@ function verifyAppontment3Day() {
 			echo '	<td width="100%" height="50px"><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
 			';
 			
+		}elseif($dayMash == $thirdDateMash){			
+		
+			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:20px" >
+			';
+			#echo '<table style="float:left;position:relative;left:33%">';
+			echo '	<td width="100%" height="50px"><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
+			';
+			
 		}
+		
 		
 		$dayStore = $dayMash;	
 		#Connect to sql to check for appointments on that day
@@ -743,9 +745,7 @@ function verifyAppontment3Day() {
 			$windowOpenBool = 1;
 			//Sets the window that we want to see availabiliy of 
 			$appointmentWindowTime = $day . $time; 
-			$appointmentWindowEnds = $day . ($time + 300);	
-
-			$_SESSION{'adminDebug'} = 0;
+			$appointmentWindowEnds = $day . ($time + 300);			
 			
 			mysql_data_seek($result, 0);
 			while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
@@ -761,7 +761,7 @@ function verifyAppontment3Day() {
 				$priorApptMash 		= $mash;				 
 				$priorApptStartDate = substr($mash, 0 , 8);				
 				$priorApptStartTime = substr($mash, 8 , 4);
-				$priorApptmashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);		
+				$priorApptmashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);
 				
 				
 				#DEBUG THIS 
@@ -823,8 +823,8 @@ function verifyAppontment3Day() {
 			$timeOfDay = substr ($time , 0 , 2) *1 . $suffix;
 			
 			if ($windowOpenBool){
+				echo '	<td id="availableAppt"  width="100%" height="50px" style="border:solid green 1px;border-radius:5px;"><span style="font-size:15;font-weight:bold;text-align:center">' .  $timeOfDay . '</span></td><tr/>
 				
-				echo '	<td id="availableAppt"  width="100%" height="50px" style="border:solid green 1px;border-radius:5px;"><span style="color:green;background-color:white;font-size:15;font-weight:bold;text-align:center">' .  $timeOfDay . ' </span></td><tr/>
 				';
 				
 			}else{
@@ -842,7 +842,7 @@ function verifyAppontment3Day() {
 	
 	?>			
 		</td>
-		<td height="100%" valign="middle"><a href="" style="float:left;font-size:20;"><div style="height:100%;width:100%;"> > </div></a></td>
+		<td height="100%" width="10px" valign="middle" style="position:relative;left:20px;float:left;font-size:20;top:25px;"><center><a href="" ><div style="height:100%;width:100%;font-size:30"> > </div></a></center></td>
 		</table>
 	</div>
 	
