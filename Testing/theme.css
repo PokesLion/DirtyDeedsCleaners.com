@@ -588,10 +588,9 @@ input[type=number]{
 	
 }
 	
-#mysubmitbutton{
+#mySubmitButton{
 
-	cursor:pointer;
-	
+	cursor:pointer;	
 	position:relative;
 	top:0%;
 	right:0%;
@@ -956,18 +955,18 @@ input[type=number]{
 #checkoutContent{
 
 
-position:relative; 
-float:left;
-top:5%;
-width : 65%;
-min-width:600px;
-background-color:white;
-height:auto;
-font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;	
--webkit-border-radius: 5px;
-border-radius: 5px;
-margin-bottom:100px;
-padding-bottom:20px;
+	position:relative; 
+	float:left;
+	top:5%;
+	width : 65%;
+	min-width:600px;
+	background-color:white;
+	height:auto;
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;	
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom:100px;
+	
 
 
 
@@ -1271,7 +1270,7 @@ a:active {
 #sub{
 
 	appearance:normal;
-	width:90%;
+	width:250px;
 	font-size:25;
 	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	padding: 10px 0px 10px;
@@ -1351,7 +1350,7 @@ a:active {
 
 
 }
-input:focus, textarea:focus {
+textarea:focus {
     outline: none;
 }
 
@@ -1618,18 +1617,6 @@ margin-bottom:50px;
 	
 }
 
-input:focus{
-	
-	outline:none;
-	
-}
-select:focus{
-	outline:none;
-	
-	
-}
-
-
 #backgroundHome{
 
   background: url(/images/Home2.jpg) no-repeat scroll center top transparent;
@@ -1663,24 +1650,57 @@ select:focus{
 	
 	
 }
-#availableAppt{
+
+.borderTop{
 	
+	border-top-right-radius:5px;
+	border-top-left-radius:5px;
 	
-	border:solid green 1px;
-	border-radius:5px;
+}
+.borderBottom{
+	
+	border-bottom-right-radius:5px;
+	border-bottom-left-radius:5px;
+	
+}
+
+.buttonSaveDayTime{
+	
+	cursor:pointer;	
+	position:relative;	
+	background-color: white;
+	height:100%;
+	width:100%;
+	
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	font-size:14px;		
+	-webkit-box-shadow: none;
+    box-shadow: none;		
+	border:none;		
 	font-size:15;
 	font-weight:bold;
 	text-align:center;
 	color:green;
 	
+	padding: 0;
+	border: none;
+	background: none;
+	outline: none;
+	margin:0;
+	
+}
+.buttonSaveDayTime:hover{
+	
+	background-color:green;
+	color:white;	
+	
+}
+#availableAppt{
+	margin:0;
+	
 }
 #availableAppt:hover{
 	
-	
 	background-color:green;
-	color:white;
-	
-	
-	
 	
 }

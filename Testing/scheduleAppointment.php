@@ -69,7 +69,7 @@
 	?>
 	
 	<h3 id="help"  onclick="changeText(this)">
-		<div  id="instruction">
+		<div id="instruction">
 			Hint:<br /> Click a day to schedule your appointment. Days after today are available for scheduling. To view a different month please click the arrow buttons. 			
 		</div>
 	</h3>
@@ -212,7 +212,7 @@ function showCalendar(){
 					
 					$tableFunc .= "			
 					<td  width=\"7.14%\">
-						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mysubmitbutton\" type=\"submit\" class=\"customButton\">  
+						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mySubmitButton\" type=\"submit\" >  
 							<div style=\"height:100%;width:100%\">
 								<span id=\"calendarDay\" align=\"right\">" . $min  . "</span>
 							</div>
@@ -253,7 +253,7 @@ function showCalendar(){
 					
 					$tableFunc .= "			
 					<td  width=\"7.14%\">
-						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mysubmitbutton\" type=\"submit\" class=\"customButton\">  
+						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mySubmitButton\" type=\"submit\" >  
 							<div style=\"height:100%;width:100%\">					
 								<span id=\"calendarDay\" align=\"right\">" . $min  . "</span>
 							</div>
@@ -279,7 +279,7 @@ function showCalendar(){
 			
 			
 			#Last Month Days
-			$tableFunc .= "			<td  width=\"7.14%\"><p id=\"mysubmitbutton\"></p></td>"; 
+			$tableFunc .= "			<td  width=\"7.14%\"><p id=\"mySubmitButton\"></p></td>"; 
 			$offset++;
 			$min --;
 			

@@ -237,7 +237,9 @@
 	
 	include('/home/dirtydeeds91/public_html/main.php');
 		
-		
+	?>
+	<script src="runPHP.js" type="text/javascript"></script>
+	<?
 	$total = 20 * $_SESSION{'lastQuoteHRS'};
 		
 	$_SESSION{'hoursWork'} =  $_SESSION{'lastQuoteHRS'};
@@ -300,47 +302,41 @@
 				<?
 			}
 			
-			?>
+			?>			
 			
-			<br />				<hr>				<br />
-		</center>
-		
-		
+			</center>
 			
 			<?
 				
 			if ($_SESSION{'conflictingSchedule'}){
 				
-				verifyAppontment3Day();
-				?>
-				<br><br><br>
-				<?
+				verifyAppontment3Day();				
 						
 			}else{
 				?>
-				
+				<br />				<hr>				<br />
 				<p class="text" style="text-align:left"><b>How Often?</b></p>
 				<br />				
-				<form action="processCheckout.php" method="post" name="form">				
+				<form action="processCheckout.php" method="post" name="form">
 					<fieldset onclick="alertRadio()">					  
 					  <div class="fieldgroup">
 						  <label for="once">
-							<input type="radio" value="1" name="frequency" id="once"> <span>Once</span>
+							<input type="radio" value="1" name="frequency" id="once" /> <span>Once</span>
 						  </label>
 					  </div>
 					  <div class="fieldgroup">
 						  <label for="weekly">
-							<input type="radio" value="2" name="frequency" id="weekly"> <span>Every Week</span>
+							<input type="radio" value="2" name="frequency" id="weekly" /> <span>Every Week</span>
 						  </label>
 					  </div>
 						<div class="fieldgroup">
 					  <label for="twoWeeks">
-						<input type="radio" value="3" name="frequency" id="twoWeeks" checked> <span>Every 2 Weeks</span>
+						<input type="radio" value="3" name="frequency" id="twoWeeks" checked /> <span>Every 2 Weeks</span>
 					  </label>
 						</div>
 						<div class="fieldgroup">
 						  <label for="fourWeeks">
-							<input type="radio" value="4"  name="frequency" id="fourWeeks"><span>Every 4 Weeks</span>
+							<input type="radio" value="4"  name="frequency" id="fourWeeks" /><span>Every 4 Weeks</span>
 						  </label>
 					  </div>
 					</fieldset>
@@ -362,7 +358,7 @@
 								<td>City</td><td></td><td>State</td>
 							</tr>
 							<tr>
-								<td><input required  class="inputPadding"  type="text" name="city" size="30" /></td><td width="20"></td><td><input   required class="inputPadding" type="text" name="state" size="20" /></td>
+								<td><input required  class="inputPadding"  type="text" name="city" size="30" /></td><td width="20"></td><td><input required class="inputPadding" type="text" name="state" size="20" /></td>
 							</tr>
 							<tr>
 								<td>Phone</td><td></td>
@@ -453,53 +449,46 @@
 					<center><input id="sub" type="submit" name="completeOrder" value="Complete Booking"/> </center>
 					</p>
 				</form>	
+			</div>
+			<div id="checkoutSidebar">		
+					
+				<table width="100%" cellspacing="15">
+				<colgroup>
+					<cols span="1" border="2"> 
+					<cols style="border:2px;Background-color:red" >
+				</colgroup>
+				<tr >
+					<td width="30px" ><p class="text" style="padding-left:10px"> <img src="/images/home.png" alt="home cleaning" style="width:30px;height:30px;" /></p></td><td valign="middle">  <span class="text"> <b>Home Cleaning</b></span></td>
+				</tr>
+				<tr>
+					<td width="30px" ><p class="text" style="padding-left:10px"><img src="/images/calendar.png" alt="dayAndTime" style="width:30px;height:30px;" /></p></td><td valign="middle"><span class="text"><b><? echo $_SESSION{'dateWorkRequest'} . " @ ". $startTimeFormatted;?></b></span></td>
+				</tr>
+				<tr>
+					<td width="30px" ><p class="text" style="padding-left:10px"><img src="/images/clock.png" alt="clock" style="width:30px;height:30px;" /></p></td><td valign="middle"><span class="text"><b><span id="hoursQuote"><? echo $_SESSION{'lastQuoteHRS'} ?></span> Hours</b></span></td>
+				</tr>	
+				<tr>
+					<td width="30px" ><p class="text" style="padding-left:10px"><img src="/images/cycle.png" alt="frequency" style="width:30px;height:30px;" /></p></td><td valign="middle"><span id="changeThis" class="text" style="font-weight:bold">Every 2 Weeks</span></td>
+				</tr>	
+				</table>
+				<hr>
+				<table width="100%" cellspacing="15">		
+				<tr>
+					<td valign="middle" >						
+						<p class="text"><b>Total <b></p>
+					</td>
+					<td valign="middle" align="right"><p id="jobQuoteColor" class="text">$<span id="jobQuote"> <?   echo $total ?></span></p>
+					</td>
+				</tr>
+				</table>
+			</div>
 			
 			<?
 			
 			}
 				
-			?>
-	</div>
-	
-	<?
-	
-	
+		
 	?>
-<div id="checkoutSidebar">
 
-	<table width="100%" cellspacing="15">
-	<colgroup>
-		<cols span="1" border="2"> 
-		<cols style="border:2px;Background-color:red" >
-	</colgroup>
-	<tr >
-		<td width="30px" ><p class="text" style="padding-left:10px"> <img src="/home/dirtydeeds91/public_html/images/home.png" alt="home cleaning" style="width:30px;height:30px;" /></p></td><td valign="middle">  <span class="text"> <b>Home Cleaning</b></span></td>
-	</tr>
-	<tr>
-		<td width="30px" ><p class="text" style="padding-left:10px"><img src="/home/dirtydeeds91/public_html/images/calendar.png" alt="dayAndTime" style="width:30px;height:30px;" /></p></td><td valign="middle"><span class="text"><b><? echo $_SESSION{'dateWorkRequest'} . " @ ". $startTimeFormatted;?></b></span></td>
-	</tr>
-	<tr>
-		<td width="30px" ><p class="text" style="padding-left:10px"><img src="/home/dirtydeeds91/public_html/images/clock.png" alt="clock" style="width:30px;height:30px;" /></p></td><td valign="middle"><span class="text"><b><span id="hoursQuote"><? echo $_SESSION{'lastQuoteHRS'} ?></span> Hours</b></span></td>
-	</tr>	
-	<tr>
-		<td width="30px" ><p class="text" style="padding-left:10px"><img src="/home/dirtydeeds91/public_html/images/cycle.png" alt="frequency" style="width:30px;height:30px;" /></p></td><td valign="middle"><span id="changeThis" class="text" style="font-weight:bold">Every 2 Weeks</span></td>
-	</tr>	
-	</table>
-	<hr>
-	<table width="100%" cellspacing="15">		
-	<tr>
-		<td valign="middle" >						
-			<p class="text"><b>Total <b></p>
-		</td>
-		<td valign="middle" align="right"><p id="jobQuoteColor" class="text">$<span id="jobQuote"> <?   echo $total ?></span></p>
-		</td>
-	</tr>
-	</table>
-	
-	
-	
-
-</div>
 <center>
 
 
@@ -638,29 +627,58 @@ function verifyAppontment3Day() {
 	#	$_SESSION{'lastQuoteMash'}						
 	#	$_SESSION{'lastQuoteHRS'}
 	
-	global $currentQuoteShown;
+	
+	
+	
 	
 	#Todays (MASH)
 	$day = date ("d"); 
 	
 	$dayPlusOne = $day +1;
 	
-	if ($dayPlusOne < 10 ){
+	
+	
+	if (!$_SESSION{'3dayDateStart'}){
 		
-		$dayPlusOne = "0" . $dayPlusOne;
+		// Set the date for starting 
+		$_SESSION{'3dayDateStart'} = substr ($_SESSION{'lastQuoteMash'} , 0 , 8);
+		
+		
+		
 	}
 	
-	$dayPlusTwo = $day +2;
-	if ($dayPlusTwo < 10 ){
+	$startDate = $_SESSION{'3dayDateStart'};
+	
+	/// START TO EVALUATE THE DATE TO START ON
+	if ($startDate > (date('Ym') . $dayPlusOne)){		
 		
-		$dayPlusTwo = "0" . $dayPlusTwo;
+		#need to find the number of days until the end of the month... Basically the calendar function needs to be modified
+		
+	}else{
+		
+		
+		if ($dayPlusOne < 10 ){
+		
+			$dayPlusOne = "0" . $dayPlusOne;
+		}
+		
+		$dayPlusTwo = $day +2;
+		if ($dayPlusTwo < 10 ){
+			
+			$dayPlusTwo = "0" . $dayPlusTwo;
+		}
+		
+		$dayPlusThree = $day +3;
+		if ($dayPlusThree < 10 ){
+			
+			$dayPlusThree = "0" . $dayPlusThree;
+		}
+		
+		
 	}
 	
-	$dayPlusThree = $day +3;
-	if ($dayPlusThree < 10 ){
-		
-		$dayPlusThree = "0" . $dayPlusThree;
-	}
+	
+	
 	
 	#echo "Day = $day";
 	#0000 indicates The time of day 
@@ -676,10 +694,10 @@ function verifyAppontment3Day() {
 	$windows =  array  ("0700" , "1000","1300","1600","1900");
 	
 	
-	?>			
-	<div style="position:relative;float:center;width:auto;height:400;left:50px">
+	?>
+	<div style="position:relative;float:center;width:auto;height:350;left:50px">
 		<table height="100%" align="middle">
-			<td height="100%" width="10px" valign="middle" style="position:relative;float:left;font-size:20;top:25px;"><center><a href="" ><div style="height:100%;width:100%;font-size:30"> < </div></a></center></td>
+			<td height="100%" width="10px" valign="middle" style="position:relative;float:left;font-size:20;top:25px;"><center><a href="#" onclick="return pastDays();"><div style="height:100%;width:100%;font-size:30"> < </div></a></center></td>
 			<td>
 	<?
 	
@@ -694,14 +712,14 @@ function verifyAppontment3Day() {
 
 		if ($dayMash == $tomorrowDateMash){				
 			
-			echo '<table width="150px" style="float:left;position:relative;text-align:center;" >
+			echo '<table width="150px" style="float:left;position:relative;text-align:center;" cellspacing="0">
 			';
-			echo '	<td width="100%" height="50px" ><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
+			echo '	<td width="100%" height="50px" ><span style="font-size:15;font-weight:bold;text-align:center;">' . $dayFormatted  . '</span></td><tr/>
 			';
 			
 		}elseif($dayMash == $secondDateMash){			
 		
-			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:10px" >
+			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:10px;"  cellspacing="0">
 			';
 			#echo '<table style="float:left;position:relative;left:33%">';
 			echo '	<td width="100%" height="50px"><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
@@ -709,7 +727,7 @@ function verifyAppontment3Day() {
 			
 		}elseif($dayMash == $thirdDateMash){			
 		
-			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:20px" >
+			echo '<table width="150px" style="float:left;position:relative;text-align:center;left:20px;"  cellspacing="0">
 			';
 			#echo '<table style="float:left;position:relative;left:33%">';
 			echo '	<td width="100%" height="50px"><span style="font-size:15;font-weight:bold;text-align:center">' . $dayFormatted  . '</span></td><tr/>
@@ -738,7 +756,7 @@ function verifyAppontment3Day() {
 			echo "Nothing to show for  : $dayMash ";
 			
 		}	
-		
+		$counterWindow = 0;
 		foreach ($windows as $time ){
 			
 			
@@ -747,61 +765,67 @@ function verifyAppontment3Day() {
 			$appointmentWindowTime = $day . $time; 
 			$appointmentWindowEnds = $day . ($time + 300);			
 			
-			mysql_data_seek($result, 0);
-			while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
-			
-				$mash = $row{'Mash'};
-				$hours = $row{'Hours'};			
-				$ID = $row{'ID'};		
+			if (mysql_num_rows($result)==0) {
+				
+				#	echo "NUM ROWS is ZERO";
+				
+			}else{			
+				mysql_data_seek($result, 0);
+				while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
+				
+					$mash = $row{'Mash'};
+					$hours = $row{'Hours'};
+					$ID = $row{'ID'};
 
-				#echo "<br/>RAW DATA 2: Mash : $mash , Hours : $hours , ID : $ID";
-				
-				//Sets the variables of data from the SQL database
-				
-				$priorApptMash 		= $mash;				 
-				$priorApptStartDate = substr($mash, 0 , 8);				
-				$priorApptStartTime = substr($mash, 8 , 4);
-				$priorApptmashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);
-				
-				
-				#DEBUG THIS 
-				if ($_SESSION{'adminDebug'}){
-				
-					echo "<br/>MATH : 
-						This Window : ($appointmentWindowTime - $appointmentWindowEnds )<br/>
-						Prior Apt   : ($priorApptMash - $priorApptmashRange)<br/>";
-				}
-				if (($appointmentWindowTime > $priorApptMash  && $appointmentWindowTime < $priorApptmashRange) ||  ($appointmentWindowEnds > $priorApptMash  && $appointmentWindowEnds < $priorApptmashRange)){
-				
-					$windowOpenBool = 0;
-					if ($_SESSION{'adminDebug'}){
-						#echo "<br/>Unavailable <br/>Prior appointment : StartTime = $priorApptMash  , End time : $priorApptmashRange <br />";
-						if ($_SESSION{'adminDebug'}){
-							echo "<p style=\"border:1px solid red\">Unavailable <p style=\"border:1px solid red\">Window Opening /Close: <br />
-								Date : $day <br/>
-								Time : $appointmentWindowTime <br/>
-								Ends : $appointmentWindowEnds <br/></p>
-								<p style=\"border:1px solid red\">Prior Appointment: <br />
-								Date : $day <br/>
-								Time : $priorApptMash <br/>
-								Ends : $priorApptmashRange <br/></p></p>						
-							";
-						}
-
-					}				
-				}else{
-					if ($_SESSION{'adminDebug'}){
-						echo "<p style=\"border:1px solid black\">Available<p style=\"border:1px solid black\">Window Opening /Close: <br />
-								Date : $day <br/>
-								Time : $appointmentWindowTime <br/>
-								Ends : $appointmentWindowEnds <br/></p>
-								<p style=\"border:1px solid black\">Prior Appointment: <br />
-								Date : $day <br/>
-								Time : $priorApptMash <br/>
-								Ends : $priorApptmashRange <br/></p></p>						
-							";
-					}
+					#echo "<br/>RAW DATA 2: Mash : $mash , Hours : $hours , ID : $ID";
 					
+					//Sets the variables of data from the SQL database
+					
+					$priorApptMash 		= $mash;				 
+					$priorApptStartDate = substr($mash, 0 , 8);				
+					$priorApptStartTime = substr($mash, 8 , 4);
+					$priorApptmashRange = $priorApptStartDate . ($priorApptStartTime + 100 * $hours);
+					
+					
+					#DEBUG THIS 
+					if ($_SESSION{'adminDebug'}){
+					
+						echo "<br/>MATH : 
+							This Window : ($appointmentWindowTime - $appointmentWindowEnds )<br/>
+							Prior Apt   : ($priorApptMash - $priorApptmashRange)<br/>";
+					}
+					if (($appointmentWindowTime > $priorApptMash  && $appointmentWindowTime < $priorApptmashRange) ||  ($appointmentWindowEnds > $priorApptMash  && $appointmentWindowEnds < $priorApptmashRange)){
+					
+						$windowOpenBool = 0;
+						if ($_SESSION{'adminDebug'}){
+							#echo "<br/>Unavailable <br/>Prior appointment : StartTime = $priorApptMash  , End time : $priorApptmashRange <br />";
+							if ($_SESSION{'adminDebug'}){
+								echo "<p style=\"border:1px solid red\">Unavailable <p style=\"border:1px solid red\">Window Opening /Close: <br />
+									Date : $day <br/>
+									Time : $appointmentWindowTime <br/>
+									Ends : $appointmentWindowEnds <br/></p>
+									<p style=\"border:1px solid red\">Prior Appointment: <br />
+									Date : $day <br/>
+									Time : $priorApptMash <br/>
+									Ends : $priorApptmashRange <br/></p></p>						
+								";
+							}
+
+						}				
+					}else{
+						if ($_SESSION{'adminDebug'}){
+							echo "<p style=\"border:1px solid black\">Available<p style=\"border:1px solid black\">Window Opening /Close: <br />
+									Date : $day <br/>
+									Time : $appointmentWindowTime <br/>
+									Ends : $appointmentWindowEnds <br/></p>
+									<p style=\"border:1px solid black\">Prior Appointment: <br />
+									Date : $day <br/>
+									Time : $priorApptMash <br/>
+									Ends : $priorApptmashRange <br/></p></p>						
+								";
+						}
+						
+					}
 				}
 				
 				
@@ -823,15 +847,69 @@ function verifyAppontment3Day() {
 			$timeOfDay = substr ($time , 0 , 2) *1 . $suffix;
 			
 			if ($windowOpenBool){
-				echo '	<td id="availableAppt"  width="100%" height="50px" style="border:solid green 1px;border-radius:5px;"><span style="font-size:15;font-weight:bold;text-align:center">' .  $timeOfDay . '</span></td><tr/>
 				
-				';
-				
-			}else{
-				echo '	<td width="100%" height="50px" style="border:solid grey 1px;border-radius:5px;"><span style="color:grey;background-color:white;font-size:15;font-weight:bold;text-align:center"> Unavailable</span></td><tr/>
-				';
-				
-			}
+					if (!$counterWindow) {
+						
+						$class = "borderTop";
+						$id = "availableAppt";
+						$style = "border:solid green 1px;overflow:hidden;margin:0;";							//
+						//		$day   			included in loop
+						//		$time 			included in loop				
+						$counterWindow++;						
+						
+					}elseif ($counterWindow > 3){
+						
+						$class = "borderBottom";
+						$id = "availableAppt";
+						$style = "border:solid green 1px;border-top:0px;overflow:hidden;margin:0;";			//
+						//		$day   			included in loop
+						//		$time 			included in loop				
+						$counterWindow = 0;	
+							
+						
+
+					}else{
+						$class = "";
+						$id = "availableAppt";
+						$style = "border:solid green 1px;border-top:0px;overflow:hidden;margin:0;";			//
+						$counterWindow++;
+						
+					}
+					
+					$dayAndTime = $day . $time;	
+					
+					echo '<td id="' . $id . '" class="' . $class . '" width="100%" height="50px" style="' . $style .  '">';
+					################################
+					?>
+							<button class="buttonSaveDayTime" value="<? echo $dayAndTime ?>" name="dayAndTimeRevised" type="submit">
+								<div style="height:100%;width:100%;border:0;margin:0;">
+									<span style="font-size:15;font-weight:bold;text-align:center"><br/><? echo $timeOfDay  ?></span>
+								</div>
+							</button>
+						</td><tr/>
+						
+						
+					<?	
+					
+				}else{
+					if (!$counterWindow) {
+						echo '	<td width="100%" class="borderTop" height="50px" style="border:solid grey 1px;"><span style="color:grey;background-color:white;font-size:15;font-weight:bold;text-align:center"> Unavailable</span></td><tr/>
+						';
+						$counterWindow++;
+					}elseif($counterWindow > 3){
+						echo '	<td width="100%" class="borderBottom"  height="50px" style="border:solid grey 1px;border-top:0px;"><span style="color:grey;background-color:white;font-size:15;font-weight:bold;text-align:center"> Unavailable</span></td><tr/>
+						';					
+						$counterWindow++;
+						
+						
+					}else{
+						echo '	<td width="100%" height="50px" style="border:solid grey 1px;border-top:0px;"><span style="color:grey;background-color:white;font-size:15;font-weight:bold;text-align:center;"> Unavailable</span></td><tr/>
+						';					
+						
+						$counterWindow++;
+						
+					}
+				}
 		
 			
 		}
@@ -842,7 +920,7 @@ function verifyAppontment3Day() {
 	
 	?>			
 		</td>
-		<td height="100%" width="10px" valign="middle" style="position:relative;left:20px;float:left;font-size:20;top:25px;"><center><a href="" ><div style="height:100%;width:100%;font-size:30"> > </div></a></center></td>
+		<td height="100%" width="10px" valign="middle" style="position:relative;left:20px;float:left;font-size:20;top:25px;"><center><a href="#" onclick="return futureDays();"><div style="height:100%;width:100%;font-size:30"> > </div></a></center></td>
 		</table>
 	</div>
 	

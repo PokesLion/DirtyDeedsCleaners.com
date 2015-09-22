@@ -23,7 +23,7 @@
 		#disallows page rerouting  (enables reading of subsequent echo)
 		$_SESSION{'debug'} = $debug;
 		#allow echo debugs
-		$_SESSION{'adminDebug'} = 1;
+		$_SESSION{'adminDebug'} = 0;
 		
 	}else{
 		
@@ -44,13 +44,11 @@
 	$startTime 	= $_POST{'request_start_time'};
 	$date		= $_SESSION{'dateWorkRequest'};
 	
-	
-	
 	if (!$_SESSION{'loggedIn'}){
 			
 			
-			$_SESSION{'AppointmentRedirected'} 	= 1; 
-			$_SESSION{'attemptedEmail'}			= $_POST{'email'};	
+			$_SESSION{'AppointmentRedirected'} 	= 1;
+			$_SESSION{'attemptedEmail'}			= $_POST{'email'};
 			$_SESSION{'zipCode'}				= $_POST{'zipCode'};
 			$_SESSION{'hours'}					= $_POST{'hours'};
 			$_SESSION{'startTime'}				= $_POST{'request_start_time'};
@@ -71,12 +69,12 @@
 			#	$_SESSION{'dateWorkRequest'}
 			
 			
-			if  ($_SESSION{'zipCode'} && $_SESSION{'attemptedEmail'} && $validEmail){
+			if  ($_SESSION{'zipCode'} && $_SESSION{'attemptedEmail'} && $validEmail && ){
 			
 				urlAssign ('loginPage.php');
 				
 			}else{	
-				if (!$validEmail && $email){
+				if ( !$validEmail && $email ){
 					
 					if (preg_match("/^[a-zA-Z0-9]+\@[a-zA-Z0-9]+/" , $email )){
 						?>				
@@ -85,6 +83,10 @@
 						</script>			
 						<?
 					}
+				}elseif(){
+					
+					
+					
 				}
 			}
 			
