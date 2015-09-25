@@ -236,18 +236,19 @@ function displayLogin(){
 
 ?>		
 		
-		<table class="login"  id="loginWindow" style="text-align:left">
-			<th colspan="3"><center>Returning/New Users</center></th><tr>
-			<form method="post" action="process.php"  class="login">
-				<tr /><td style="line-height:2"> <span style="color:white">#</span></td><tr />
-				<td style="position:relative;left:25%;margin-right:25% ">Email</td><tr></tr>
-				<td style="position:relative;left:25%;margin-right:25% " ><input size="35" type="email" name="login"  class="whitePadding" placeholder="Emai address" value="<?php   echo $username   ?>">  </td><tr />
-				<td style="position:relative;left:25%;margin-right:25% ">Password</td><tr />				
-				<td style="position:relative;left:25%;margin-right:25% "><input size="35"  type="password"  class="whitePadding" name="password" value="<?php   echo $cookiePass   ?>"></span></td><tr /> <td><span style="color:white">#</span> </td><tr /> 
-				<td><input id="submitLogin" type="submit" name="submitLogin" value="Login"></td><tr /> <td><span style="color:white">#</span> </td><tr /> 
-				<td style="position:relative;left:15%;margin-right:15%">Sign up : <input type="checkbox" name="signUp" id="checkbox"> Remember me : <input type="checkbox" name="rememberMe" id="checkbox">  &nbsp<a href="remove.php"><span style="color:blue">Remove username and password.</a></td>					
+		<table class="login"  id="loginWindow" align="center" >
+			<th><span style="text-align:left;font-weight:bold">Returning/New Users</span></th><tr />
+			<form method="post" action="process.php"  class="login">				
+				<td style="line-height:2"></td><tr />
+				<td style="position:relative;left:24%;line-height:2;text-align:left">Email</td><tr></tr>
+				<td style="text-align:center " ><input size="35" type="email" name="login"  class="whitePadding" placeholder="Emai address" value="<?php   echo $username   ?>">  </td><tr />
+				<td style="position:relative;left:24%;line-height:2;text-align:left">Password</td><tr />
+				<td style="position:relative;text-align:center"><input size="35"  type="password"  class="whitePadding" name="password" value="<?php   echo $cookiePass   ?>"></span></td><tr />
+				<td style="position:relative;top:20px;text-align:left;right:10px"><input id="submitLogin" type="submit" name="submitLogin" value="Login"><tr />
+				<td style="position:relative;top:40px;text-align:center">Sign up : <input type="checkbox" name="signUp" id="checkbox"> Remember me : <input type="checkbox" name="rememberMe" id="checkbox">  &nbsp<a href="remove.php"><span style="color:blue">Remove username and password.</a></td>					
 			</form>			
 		</table>
+		<br /><br /><br />
 	
 		
 		
@@ -431,7 +432,7 @@ function timeStampLogout(){
 			
 			urlAssign("http://dirtydeedscleaners.com/logout.php");
 			
-		
+			die;
 			
 			
 		} else {
@@ -444,22 +445,20 @@ function timeStampLogout(){
 	}
 	
 	
+	
+	
 }
 
 
 function urlAssign($location){
-	
-	
-	
+
 	if (!$_SESSION{'debug'}){
 		echo "
-							<script		type=\"text/javascript\">
-								window.location.assign('" . $location . "');
-							</script>
-		";	
-		
+			<script		type=\"text/javascript\">
+				window.location.assign('" . $location . "');
+			</script>
+		";
 	}
-	
 	
 }	
 
