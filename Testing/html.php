@@ -80,8 +80,22 @@ function htmlHeader(){
 					<h3>
 						<table width="100%" style="position:relative;" height="100%">
 							<td width="25%"></td>
-							<td width="40%"><b><a id="logo" href="http://dirtydeedscleaners.com/index.php"><u>Dirty Deeds Cleaners</u></a></b></td>
-							<td width="5%"><span id="else">
+							<?
+							if ($_SESSION{'loggedIn'}){
+								?>
+								<td width="25%"><b><a id="logo" href="http://dirtydeedscleaners.com/index.php"><u>Dirty Deeds Cleaners</u></a></b></td>
+								<td width="5%"><span class="else"><a href="http://dirtydeedscleaners.com/bookings.php">Bookings</a></span></td>
+								<td width="4%"><span class="else"><a href="http://dirtydeedscleaners.com/profile.php">Profile</a></span></td>
+								<td width="7%"><span class="else"><a href="http://dirtydeedscleaners.com/cleaningcredit.php">Free Cleanings</a></span></td>
+								<?
+							}else{
+								?>
+								<td width="40%"><b><a id="logo" href="http://dirtydeedscleaners.com/index.php"><u>Dirty Deeds Cleaners</u></a></b></td>
+								<?
+							}
+							?>
+							
+							<td width="4%"><span class="else">
 	<?php
 	#
 	#	This php is used to send the proper link for login and logout
@@ -90,7 +104,7 @@ function htmlHeader(){
 	global $currentPage;
 	if ($currentPage != "loginPage" && !$_SESSION['loggedIn']){
 
-		echo '<a href="loginPage.php">Login</a>';
+		echo '<a href="http://dirtydeedscleaners.com/loginPage.php">Login</a>';
 	}				
 
 	if ($_SESSION['loggedIn']){
@@ -101,7 +115,7 @@ function htmlHeader(){
 
 	}?>
 							</td>
-							<td width="5%" align="right"><a id="else" href="http://dirtydeedscleaners.com/contact.php">Help</a></td>
+							<td width="5%"><span class="else"><a href="http://dirtydeedscleaners.com/contact.php">Help</a></span></td>
 							<td width="25%"></td>
 						</table>				
 					</h3>

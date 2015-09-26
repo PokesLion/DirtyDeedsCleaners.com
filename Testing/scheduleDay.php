@@ -166,8 +166,8 @@ echo "<div id=\"main\"><center>";
 		<div id="checkout" class="round">
 			<br />			
 			<p class="hugBelowLine"><b>Cleaning price</b>
-			<br />for service in Los Angeles
-			
+				<br />for service in Los Angeles
+			</p>
 			
 			
 			
@@ -176,7 +176,7 @@ echo "<div id=\"main\"><center>";
 			 
 			<form id="myForm" action="quote.php" method="post">
 				<br /><center><input required name="zipCode" type="text" size="9" placeholder="Zip code"  class="checkoutInput" /></center>
-						</p>
+				
 						
 				<p  class="hugBelowLine">Tell us about your place: </p>			
 			

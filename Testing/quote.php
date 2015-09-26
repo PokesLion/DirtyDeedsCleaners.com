@@ -1,19 +1,23 @@
 <?php
 
-	
-	
+	########################################################################################################################################################
+		#	LAST CHANGES 09/26/2015 - set session var to start time edit  and also store it into SQL instead of the version with the : in it
+		#	$_SESSION{'lastQuoteSTART'} = $startTimeEdit;
+		#	$startTimeEdit
+	########################################################################################################################################################
 	
 	
 	#TODO VERIFY THE DATA IS PROPER BEFORE SAVING!
 	
 	include ('functions.php');
 	
-	$finalizeFileName = "Finalize.php";
-
-	
-	
+	$finalizeFileName = "Finalize.php";	
 	session_start();
+	$_SESSION{'lastRevisedDate'} = NULL;
+	
+	$_SESSION{'debug'} = 0;
 	$_SESSION{'conflictingSchedule'} = NULL;
+	$_SESSION{'3dayDateStart'} = NULL;	
 	
 	
 	
@@ -25,15 +29,9 @@
 		#allow echo debugs
 		$_SESSION{'adminDebug'} = 0;
 		
-	}else{
-		
-		$_SESSION{'debug'} = 0;
-		
 	}
 	
-	
 	#THis stops redirects when set to 1
-	#	$_SESSION{'debug'} = 1;
 	
 	$email 		= $_SESSION{'attemptedEmail'};
 	$username  	= $_SESSION{'username'};
@@ -47,53 +45,46 @@
 	if (!$_SESSION{'loggedIn'}){
 			
 			
-			$_SESSION{'AppointmentRedirected'} 	= 1;
-			$_SESSION{'attemptedEmail'}			= $_POST{'email'};
-			$_SESSION{'zipCode'}				= $_POST{'zipCode'};
-			$_SESSION{'hours'}					= $_POST{'hours'};
-			$_SESSION{'startTime'}				= $_POST{'request_start_time'};
-			$_SESSION{'bedrooms'}				= $_POST{'bedrooms'};
-			$_SESSION{'bathrooms'}				= $_POST{'bathrooms'};
+		$_SESSION{'AppointmentRedirected'} 	= 1;
+		$_SESSION{'attemptedEmail'}			= $_POST{'email'};
+		$_SESSION{'zipCode'}				= $_POST{'zipCode'};
+		$_SESSION{'hours'}					= $_POST{'hours'};
+		$_SESSION{'startTime'}				= $_POST{'request_start_time'};
+		$_SESSION{'bedrooms'}				= $_POST{'bedrooms'};
+		$_SESSION{'bathrooms'}				= $_POST{'bathrooms'};
+		
+		$email = $_SESSION{'attemptedEmail'};
+		
+		#echo "<br/>Email = $email";
+		
+		$validEmail = 0;
+		
+		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$validEmail = 1;
+		}
+		
+		
+		#	$_SESSION{'dateWorkRequest'}
+		
+		
+		if  ($_SESSION{'zipCode'} && $_SESSION{'attemptedEmail'} && $validEmail){
+		
+			urlAssign ('loginPage.php');
 			
-			$email = $_SESSION{'attemptedEmail'};
-			
-			#echo "<br/>Email = $email";
-			
-			$validEmail = 0;
-			
-			if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				$validEmail = 1;
-			}
-			
-			
-			#	$_SESSION{'dateWorkRequest'}
-			
-			
-			if  ($_SESSION{'zipCode'} && $_SESSION{'attemptedEmail'} && $validEmail && ){
-			
-				urlAssign ('loginPage.php');
+		}else{	
+			if ( !$validEmail && $email ){
 				
-			}else{	
-				if ( !$validEmail && $email ){
-					
-					if (preg_match("/^[a-zA-Z0-9]+\@[a-zA-Z0-9]+/" , $email )){
-						?>				
-						<script type="text/javascript">							
-							document.getElementById('emailErr').innerHTML = "The email address entered is not valid : <? echo $email ?> <br /><br />";
-						</script>			
-						<?
-					}
-				}elseif(){
-					
-					
-					
+				if (preg_match("/^[a-zA-Z0-9]+\@[a-zA-Z0-9]+/" , $email )){
+					?>				
+					<script type="text/javascript">							
+						document.getElementById('emailErr').innerHTML = "The email address entered is not valid : <? echo $email ?> <br /><br />";
+					</script>			
+					<?
 				}
 			}
+		}
 			
-			
-			
-	}else{
-		
+	}else{	
 		
 		if ($_SESSION{'AppointmentRedirected'} ){
 						
@@ -113,35 +104,60 @@
 				echo "date = $date<br/>";
 			}
 			
+		}elseif($_POST{'dayAndTimeRevised'}){			
+			
+			#echo "<br/>Day / Time Revised = " . $_POST{'dayAndTimeRevised'};
+			#echo "<br/>Last Quote = " . $_SESSION{'lastQuoteNumber'};
+			
+			$zipCode 			= $_SESSION{'CoreDATAZIP'};
+			$hours 				= $_SESSION{'CoreDATAHRS'};
+			$bedrooms 			= $_SESSION{'CoreDATABEDR'};
+			$bathrooms     		= $_SESSION{'CoreDATABATHR'};			
+			$date 				= substr($_POST{'dayAndTimeRevised'}, 4 , 2) . "/" . substr($_POST{'dayAndTimeRevised'}, 6 , 2) . "/" . substr($_POST{'dayAndTimeRevised'}, 0 , 4);
+			$startTime 			= substr($_POST{'dayAndTimeRevised'}, 8 , 4);			
+			
+			$_SESSION{'lastRevisedDate'} = $_POST{'dayAndTimeRevised'};
+			
+			if ($_SESSION{'adminDebug'} && $debug){
+				
+				echo "<br/>Bedrooms = " . $bedrooms  . "<br/>";
+				echo "bathrooms = " . $bathrooms	. "<br />";
+				echo "hours = " . $hours 	. "<br />";
+				echo "zipCode = " . $zipCode 	. "<br />";
+				echo "startTime = " . $startTime	. "<br />";	
+				echo "date = $date<br/>";
+			}
+			
 		}
+		
 		if ($zipCode && $hours && $startTime && $bedrooms && $bathrooms && $date){
+			####		CORE DATA FOR USE AGAIN IF APPOINTMENTS CONFLICT			####
 			
+			$_SESSION{'CoreDATAZIP'}			= $zipCode;
+			$_SESSION{'CoreDATAHRS'}			= $hours;
+			$_SESSION{'CoreDATABEDR'}			= $bedrooms;
+			$_SESSION{'CoreDATABATHR'}			= $bathrooms;
 			
-			$date  = substr( $date , 6 ,4 ) . substr( $date , 0 ,2 ) .  substr( $date , 3 ,2 );		
-			
-			$startTimeEdit = preg_replace( "/[\:]/" , "" , $startTime );		
-			
+			$date  = substr( $date , 6 ,4 ) . substr( $date , 0 ,2 ) .  substr( $date , 3 ,2 );
+			$startTimeEdit = preg_replace( "/[\:]/" , "" , $startTime );			
 			$mash =  $date .  $startTimeEdit;
 			
-			#	echo "Mash = " . $mash;
+			$_SESSION{'CoreDATAMASH'} = $mash;
 			
 			
 			connectSQL();
 			
 			
-			if( mysql_query ("INSERT INTO quotes (Username  , ZipCode  ,StartTime , Bedrooms , Bathrooms , Hours , Date , Mash ) VALUES ('$username', '$zipCode', '$startTime', '$bedrooms', '$bathrooms', '$hours' , '$date' , '$mash'); ")){
+			if( mysql_query ("INSERT INTO quotes (Username  , ZipCode  ,StartTime , Bedrooms , Bathrooms , Hours , Date , Mash ) VALUES ('$username', '$zipCode', '$startTimeEdit', '$bedrooms', '$bathrooms', '$hours' , '$date' , '$mash'); ")){
 				
 				
 			  #echo "Successfully Inserted";
 			}else{
 			  #echo "Insertion Failed";
 			}
-			$success = 1;		
+			$success = 1;
 			
 		}else{
-			
-			#			
-			
 			
 			#DEBUG
 			if (0){
@@ -154,10 +170,8 @@
 				echo "startTime = " . $startTime	. "<br />";	
 				echo "date = $date<br/>";
 			}
-			#urlAssign('index.php');
 			
 		}
-		
 	}
 	  
 	
@@ -176,8 +190,7 @@
 		$_SESSION{'lastQuoteNumber'} = $ID;
 		$_SESSION{'lastQuoteMash'} = $mash;		
 		$_SESSION{'lastQuoteHRS'} = $hours;
-		$_SESSION{'lastQuoteSTART'} = $startTime;
-		
+		$_SESSION{'lastQuoteSTART'} = $startTimeEdit;
 		
 		
 		
@@ -245,8 +258,11 @@
 			$_SESSION{'dateWorkRequest'} 	= NULL;
 			
 		}
-		urlAssign($structure . $finalizeFileName);
 		
+		
+		if (!$debugStutff){
+			urlAssign($structure . $finalizeFileName);		
+		}
 		
 		#echo "Hours = " . $_SESSION{'lastQuoteHRS'} . "<br />";
 

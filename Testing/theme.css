@@ -1,8 +1,21 @@
+
+#backgroundHome{
+
+	
+  
+  background: url(/images/Home2.jpg) no-repeat;
+  height: 85%;
+  width:100%;  
+  Overflow:hide;
+  
+
+	
+	
+	
+}
 #adminButton{
 
 	background-color:white;
-	
-	
 	position:absolute;
 	top:20%;
 	left:10%;
@@ -42,11 +55,12 @@ body header table {
 	text-align:left;	
 	color:black;
 	
-}
+}   
 
-    
-
+.else{
+	
 		
+}	
 
 header a.logo:link{
     color:#00FFFF;
@@ -192,7 +206,8 @@ font-size:14;
 color:red;
 width:80%;
 font-style:center;
-border: ridge, 1px:
+border: ridge, 1px;
+background-color:white;
 
 
 
@@ -238,6 +253,20 @@ font-size:11;
 	background-color: rgba(255,255,255,1);
 	padding-bottom:50;
 
+}
+.loginError{
+	
+	
+	
+	
+	width:600px;
+	margin-right:auto;
+	margin-left:auto;		
+	font-size:13;
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;	
+	/*#Border*/	
+	padding: 20px;	
+	background-color: rgba(255,255,255,1);
 }
 
 
@@ -1032,9 +1061,8 @@ font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 #checkoutSidebar{
 
-
 	position:fixed; 
-	left:65%;
+	left:62%;
 	top:120PX;
 	width:300px;
 	background-color:white;
@@ -1050,16 +1078,14 @@ font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	
 
 }
-
-
-
-
-
-.hidearrow{
-
-
-color: #191950;
-	
+#bookings{
+position:relative; 
+float:left;
+width : 100%;
+height:auto;
+font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;	
+background-color:white;
+padding:10px;
 
 }
 
@@ -1636,20 +1662,7 @@ margin-bottom:50px;
 	
 }
 
-#backgroundHome{
 
-	
-  
-  background: url(/images/Home2.jpg) no-repeat scroll center top transparent;
-  height: 85%;
-  width:100%;  
-  Overflow:hide;
-  
-
-	
-	
-	
-}
 
 #scheduleAppt:hover{
 	position:relative;	
@@ -1726,10 +1739,6 @@ margin-bottom:50px;
 	color:white;
 	
 }
-table {
-  table-layout: fixed;
-}
-
 #fixedTable td{
  
   width:5%; 

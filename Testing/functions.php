@@ -7,8 +7,6 @@ global $script;
 
 include ('database.php');
 
-
-
 function loginPOST(){
 	
 		
@@ -64,15 +62,19 @@ function loginPOST(){
 
 	#Display Error
 	if ($error){
-		echo "<br><br><hr><br>";
-		echo "<p class=\"error\"> Error : <ol class=\"error\"><li>$error</li></ol></p>";
-		echo "<br><hr>";
+		?>
+		<table class="loginError"  id="loginWindow" align="center" style="text-align:left;position:relative;bottom:50px;">
+			<td>
+				<br>
+				<p class="text"><span class="error">Error : </span><ol><li class="error"> <? echo $error ?></li></ol></p>
+				<br>
+			</td>
+		</table>
+		<?
+		
 		
 	}
-	echo "    </div>";			#Div end "account"			
-	
-			
-
+	echo "    </div>";			#Div end "account"
 	$_SESSION['error'] = "";
 			
 	
@@ -201,7 +203,6 @@ function displayLogin(){
 	$redirected = $_SESSION{'AppointmentRedirected'};
 	$email		= $_SESSION{'attemptedEmail'};	
 	$zipCode 	= $_SESSION{'zipCode'};
-	
 	
 	
 	if (($_SESSION{'cookieRemoveCounter'} > 1) && !$_SESSION{'cookieRemoveCounterMSG'}){
@@ -404,6 +405,7 @@ OUT;
 
 
 	if ($error){
+		
 		echo "<span class=\"error\"> Error : $error</span>";
 	}
 }
@@ -722,7 +724,7 @@ function verifyAppontment($startTime , $hours , $ID) {
 			
 			
 			#	Start time 	vs start time 
-			if (($_SESSION{'lastQuoteMash'} >= $startTime  && $_SESSION{'lastQuoteMash'} <= $mashRange) ||  ($currentAppointmentEnds >= $startTime  && $currentAppointmentEnds <= $mashRange)){
+			if (($_SESSION{'lastQuoteMash'} >= $startTime  && $_SESSION{'lastQuoteMash'} <= ($mashRange -1)) ||  ($currentAppointmentEnds >= $startTime  && $currentAppointmentEnds <= $mashRange)){
 				if ($_SESSION{'adminDebug'}){
 					echo "<br/>Schedule Conflicts <br/>Prior appointment : StartTime = $startTime  , End time : $mashRange <br />";
 					
@@ -879,8 +881,5 @@ function verifyAddress(){
 	return $addressFound;
 	
 }
-	
-
-
 
 ?>

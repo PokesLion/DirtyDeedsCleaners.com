@@ -1,5 +1,7 @@
 <?
 
+
+	session_start();
 	require('main.php');
 	
 	?>

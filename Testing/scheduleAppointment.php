@@ -5,25 +5,18 @@
 	
 	function changeText(id) { 
 		id.innerHTML = "";
-	}';
-	
-		
+	}';	
 		
 	require('main.php');
 	
-	
-
-	
 	?>
-	
-	
 	
 	<div id="main">
 		<div id="calendarContent">
 			<form action="scheduleDay.php" method="POST">
 				<?
 				$table = '
-				<table height="70%" cols="7" border="0" cellspacing="15">
+				<table id="fixedTable" height="70%" cols="7" border="0" cellspacing="15">
 				
 				<td colspan="7"  id="appointmentHeader"><center><span  style="color:white" size="13"><font size="12">Appointment on day</font></center></td>
 				';		
@@ -211,7 +204,7 @@ function showCalendar(){
 				 if ($selection{'date'} > $fullDate){				
 					
 					$tableFunc .= "			
-					<td  width=\"7.14%\">
+					<td>
 						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mySubmitButton\" type=\"submit\" >  
 							<div style=\"height:100%;width:100%\">
 								<span id=\"calendarDay\" align=\"right\">" . $min  . "</span>
@@ -222,7 +215,7 @@ function showCalendar(){
 			
 				}else{
 					$tableFunc .= "			
-					<td  width=\"7.14%\">
+					<td>
 						<button type=\"button\" id=\"closedsubmitbutton\">				
 							<div style=\"height:100%;width:100%\">
 								<span id=\"calendarDay\" align=\"right\">" . $min  . "</span>
@@ -252,7 +245,7 @@ function showCalendar(){
 				if ($selection{'date'} > $fullDate){				
 					
 					$tableFunc .= "			
-					<td  width=\"7.14%\">
+					<td>
 						 <button value = \""  . $selection{'date'} .  "\" name=\"day\" id=\"mySubmitButton\" type=\"submit\" >  
 							<div style=\"height:100%;width:100%\">					
 								<span id=\"calendarDay\" align=\"right\">" . $min  . "</span>
@@ -263,7 +256,7 @@ function showCalendar(){
 			
 				}else{
 					$tableFunc .= "			
-					<td  width=\"7.14%\">
+					<td>
 						<button type=\"button\" id=\"closedsubmitbutton\">				
 							<div style=\"height:100%;width:100%\">
 								<span id=\"calendarDay\" align=\"right\">" . $min  . "</span>
@@ -279,7 +272,7 @@ function showCalendar(){
 			
 			
 			#Last Month Days
-			$tableFunc .= "			<td  width=\"7.14%\"><p id=\"mySubmitButton\"></p></td>"; 
+			$tableFunc .= "			<td><p id=\"mySubmitButton\"></p></td>"; 
 			$offset++;
 			$min --;
 			

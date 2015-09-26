@@ -3,24 +3,7 @@
 
 	session_start();
 
-	set_include_path(dirname(__FILE__) . '/../../public_html');
-
-
-/*
-
-	find id clicked on
- <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-
-
-  <script type="text/javascript">
-  
-  </script>
-  <div onclick="clicked(this);" id="test">test</div>
-
-*/
-  
-	
-	
+	set_include_path(dirname(__FILE__) . '/../../public_html');	
 	
 	$script = '
 	
@@ -257,28 +240,62 @@
 	#$bedrooms = $_POST{'bedrooms'};
 	#$bathrooms = $_POST{'bathrooms'};
 	$hours = $_SESSION{'lastQuoteHRS'};
-	$startTime = $_SESSION{'lastQuoteSTART'};
+	
 	#$email = $_POST{'email'};
 	
 	
 	
-	if ($startTime){
+	
+	
+	
+	if ($_SESSION{'lastRevisedDate'}){
 		
-		$startTime = preg_replace( '/:/' , '' , $startTime  );
-	}
-	
-	
-	$firstTwo = substr( $startTime , 0 , 2 );
-	$nextTwo =  substr( $startTime , 2 , 2 );
-	
-	if ($startTime < 1200){
-		$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " AM";
+		################################	Appintment Date and time
+		$appointmentDate 	= substr( $_SESSION{'lastRevisedDate'} , 0 , 8 );
+		$startTime 			= substr ( $_SESSION{'lastRevisedDate'} , 8 , 4 );
+		
+		################################	FORMAT
+		#Parse Date
+		$parseYr 			= substr( $appointmentDate , 0 , 4);
+		$parseMn 			= substr( $appointmentDate , 4 , 2);	
+		$parseDy 			= substr( $appointmentDate , 6 , 2);		
+		$parseDate 			= $parseMn . "/" . $parseDy . "/" . $parseYr;
+		#Parse Time
+		$firstTwo 			= substr ( $startTime , 0 , 2 );
+		$nextTwo 			= substr ( $startTime , 2 , 2 );
+		#FormatTime
+		if ($startTime > 1200){			
+			$firstTwo = $firstTwo-12;
+			if (strlen($firstTwo) < 2){
+				#Make both entries identical format
+				$firstTwo = "0" . $firstTwo;
+			}			
+			$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " PM";			
+		}else{		
+			$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " AM";			
+		}
+		
+		$_SESSION{'dateTimeAppointment'} = $parseDate . " @ " . $startTimeFormatted;		
 	}else{
-		$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " PM";
+		$startTime = $_SESSION{'lastQuoteSTART'};
+		
+		if ($startTime){
+			$startTime = preg_replace( '/:/' , '' , $startTime  );
+		}
+		
+		$firstTwo = substr( $startTime , 0 , 2 );
+		$nextTwo =  substr( $startTime , 2 , 2 );
+
+		if ($startTime > 1200){
+			$firstTwo = $firstTwo-12;
+			$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " PM";
+		}else{		
+			$startTimeFormatted =  $firstTwo . ":" . $nextTwo . " AM";		
+		}
+		
+		$_SESSION{'dateTimeAppointment'} = $_SESSION{'dateWorkRequest'} . " @ ". $startTimeFormatted;
 		
 	}
-	$_SESSION{'dateTimeAppointment'} = $_SESSION{'dateWorkRequest'} . " @ ". $startTimeFormatted;
-	
 	
 	if ($_SESSION{'conflictingSchedule'}){
 	
@@ -292,46 +309,51 @@
 		<?
 	}
 	?>
-	
-		<center>
+			<center>
 			<br />		
-			<p><h2>Complete your booking</h2></p>		
-
-			
-			<?
-			
-			#echo "<br />Conflicting appointment  = " . $_SESSION{'conflictingSchedule'} . "<br/>";
-			
+			<p><h2>Complete your booking</h2></p>							
+			<?								
 			if ($_SESSION{'conflictingSchedule'}){
 				?>
 				<p class="text">Please choose a different time <br/>Due to high demand, we don't have availability at that time. Please choose a different time below. </p>
 				<?
 			}else{
 				?>
+				<p class="error">The following page is under development... Thank you for your patience </p>		
 				<p class="text">Great! We have availability at this time. A few more details and we can complete your booking.</p>
 				<?
-			}
-			
+			}			
 			?>			
+			</center>			
+			<?				
+			if ($_SESSION{'conflictingSchedule'}){			
 			
-			</center>
-			
-			<?
+				$zipCode 			= $_SESSION{'CoreDATAZIP'};
+				$hours 				= $_SESSION{'CoreDATAHRS'};
+				$bedrooms 			= $_SESSION{'CoreDATABEDR'};
+				$bathrooms     		= $_SESSION{'CoreDATABATHR'};
 				
-			if ($_SESSION{'conflictingSchedule'}){
-				
-				if ($_SESSION{'adminDebug'}){							
-					 echo "<br/>" . $_POST{'dayAndTimeRevised'} ;
-				}
-				
-				verifyAppontment3Day();				
+				if ($_SESSION{'adminDebug'}){
+					
+					echo "<br/>Day/time Revised = " . $_SESSION{'lastRevisedDate'} ;
 						
-			}else{
+					if (1){
+						echo "<br/>Bedrooms = " . $bedrooms  . "<br/>";			
+						echo "bathrooms = " . $bathrooms	. "<br />";
+						echo "hours = " . $hours 	. "<br />";
+						echo "zipCode = " . $zipCode 	. "<br />";
+						
+					}
+				}
+				verifyAppontment3Day();
+						
+			}else{			
+				
 				?>
 				<br />				<hr>				<br />
 				<p class="text" style="text-align:left"><b>How Often?</b></p>
 				<br />				
-				<form action="processCheckout.php" method="post" name="form">
+				<form action="../../processCheckout.php" method="post" name="form">
 					<fieldset onclick="alertRadio()">					  
 					  <div class="fieldgroup">
 						  <label for="once">
@@ -460,7 +482,7 @@
 					<p class="text">
 						<center>By clicking the link below, I accept DirtyDeedsCleaners.com Terms of use.</center></p>			
 					<p class="text">
-					<center><input id="sub" type="submit" name="completeOrder" value="Complete Booking"/> </center>
+					<center><input id="sub" type="submit" name="completeOrder" value="Complete Booking"/></center>
 					</p>
 				</form>	
 			</div>
@@ -483,9 +505,9 @@
 					<tr>
 						<td width="30px" ><p class="text" style="padding-left:10px"><img src="/images/cycle.png" alt="frequency" style="width:30px;height:30px;" /></p></td><td valign="middle" style="position:relative;left:20px"><span id="changeThis" class="text" style="font-weight:bold;">Every 2 Weeks</span></td>
 					</tr>	
-					</table>
-					<hr>
-					<table width="100%" cellspacing="15">		
+				</table>
+				<hr>
+				<table width="100%" cellspacing="15">		
 					<tr>
 						<td valign="middle" >						
 							<p class="text"><b>Total <b></p>
@@ -494,114 +516,22 @@
 						</td>
 					</tr>
 				</table>
-			</div>
-		
-			<?
-			
-			}
-				
-		
+			</div>		
+			<?			
+		}
 	?>
-
-<center>
-
-
-
-
-</center>
- <br />
-</div> 
+		<br />
+	</div> <!--  END MAIN 	--> 
 
 <?
-
-	
-
-
 	htmlEnd();
 
-	if (0)
-	{
-			// should clear this soon
-		$_SESSION{'lastQuoteMash'} = NULL;					
-		$_SESSION{'lastQuoteSTART'} = NULL;
-		$_SESSION{'lastQuoteHRS'} = NULL;
-		
-	}
+########################################################################################################################################################################################################
+#	
+#								FUNCTIONS
+#
+########################################################################################################################################################################################################
 
-
-
-/*
-
-<p hidden>
-	
-		This php code easily transers to javascript
-		$phpArray = array(
-				  0 => "Mon", 
-				  1 => "Tue", 
-				  2 => "Wed", 
-				  3 => "Thu",
-				  4 => "Fri", 
-				  5 => "Sat",
-				  6 => "Sun",
-
-			)
-
-		<h2><p>using php's json_encode()* function</p></h2>		<br />
-		<br />		Other Stuff:
-		<?
-			if ($_POST){
-				
-				
-				$bathrooms = $_POST{'bathroom'};
-				$bedrooms = $_POST{'bedroom'};
-				$hoursCleaning = $_POST{'hours'};
-				$startTime = $_POST{'request_start_time'};
-				
-				
-				
-				#var value3 = Math.round (1.5 + (value1 * 0.5) + (value2 * 0.3));
-					
-				print_r ($_POST);
-				
-			}
-			
-			
-
-		?>
-
-
-	</p>
-	
-	
-	
-	#Javascript
-	
-	$phpArray = array(
-	
-          0 => "Mon", 
-          1 => "Tue", 
-          2 => "Wed", 
-          3 => "Thu",
-          4 => "Fri", 
-          5 => "Sat",
-          6 => "Sun",
-		  7 => "Mon",
-
-    );
-	
-
-<script type="text/javascript">
-
-    var jArray= <?php echo json_encode($phpArray ); ?>;
-
-    for(var i=0;i<7;i++){
-        alert(jArray[i]);
-    }
-	
-</script>	
-	
-	
-*/
 function showAvailableAppointmentTimes() {	
 	
 	connectSQL();
@@ -620,6 +550,8 @@ function showAvailableAppointmentTimes() {
 	$counter = 0;	
 	$sql = "SELECT Mash, Hours, ID FROM quotes WHERE Mash > $tomorrowsDateMash";	
 	$result = mysql_query ($sql);
+	
+	
 	while ($row = mysql_fetch_array ($result) ){	// Look at every prior appointment
 		
 		$mash = $row{'Mash'};
@@ -716,8 +648,10 @@ function verifyAppontment3Day() {
 		}
 	}
 	$startDate = $_SESSION{'3dayDateStart'};
-	#echo "<br>3 Day Start DATE = " . $startDate . "<br/><br/>";
+	
 	###################		SET THE CUSTOM START YEAR MONTH AND Day$dayPlusOne				= $calcedDate[0];
+	#
+	#
 	#		$dayPlusOne
 	#		$yearOne	
 	#		$monthOne	
@@ -726,30 +660,21 @@ function verifyAppontment3Day() {
 	#		$monthTwo	
 	#		$dayPlusThree
 	#		$yearThree	
-	#		$monthThree	
-	
-	
-	#echo "Day = $day";
-	#0000 indicates The time of day 
-	
-	
-	#TODO - THIS NEEDS TO GET VARS FROM ABOVE FOR YEAR AND MONTH
+	#		$monthThree
+	#
+	#
 	#This handles Different days , soon it will handle different months and year
 	$tomorrowDateMash  =  $yearOne . $monthOne . $dayPlusOne . "0000";
 	$secondDateMash  =  $yearTwo . $monthTwo . $dayPlusTwo . "0000";
 	$thirdDateMash  =  $yearThree . $monthThree . $dayPlusThree . "0000";
 			
-	$threeDayMash = array ($tomorrowDateMash , $secondDateMash , $thirdDateMash);  // Iterates each day
+	$threeDayMash = array ($tomorrowDateMash , $secondDateMash , $thirdDateMash);  // Iterates each day after calculating the calendar	
 	
-	#echo "<br />Data Dump = " . print_r ($threeDayMash);
-	
-	
-	// Now for each day check the availability for every 3 hour window
-	$windows =  array  ("0700" , "1000","1300","1600","1900");
+	$windows =  array  ("0700" , "1000","1300","1600","1900");		// Sets 3 hour windows to check for on each given day
 	
 	?>
 	<form action="../../quote.php" method="POST">
-		<div style="position:relative;height:350;justify-content: center;display: flex;">		
+		<div style="position:relative;height:350;justify-content: center;display: flex;">
 			<table height="100%" align="middle" style="position:relative;right:10px;">
 				<td height="100%" width="auto" valign="middle" style="position:relative;float:left;font-size:20;top:25px;"><center><a href="../../minus3day.php" onclick="return pastDays();"><div style="height:100%;width:100%;font-size:30"><span style="font-size:50;color:#B2B2B2;position:relative;right:20px"> < </span></div></a></center></td>
 				<td>
@@ -789,8 +714,6 @@ function verifyAppontment3Day() {
 				
 			}
 			
-			
-			$dayStore = $dayMash;	
 			#Connect to sql to check for appointments on that day
 			
 			connectSQL();		
@@ -842,7 +765,8 @@ function verifyAppontment3Day() {
 								This Window : ($appointmentWindowTime - $appointmentWindowEnds )<br/>
 								Prior Apt   : ($priorApptMash - $priorApptmashRange)<br/>";
 						}
-						if (($appointmentWindowTime > $priorApptMash  && $appointmentWindowTime < $priorApptmashRange) ||  ($appointmentWindowEnds > $priorApptMash  && $appointmentWindowEnds < $priorApptmashRange)){
+						
+						if (($appointmentWindowTime >= $priorApptMash  && $appointmentWindowTime <= ($priorApptmashRange -1)) ||  (($appointmentWindowEnds) >= $priorApptMash  && ($appointmentWindowEnds) <= $priorApptmashRange)){
 						
 							$windowOpenBool = 0;
 							if ($_SESSION{'adminDebug'} && $debug){
@@ -851,7 +775,7 @@ function verifyAppontment3Day() {
 									echo "<p style=\"border:1px solid red\">Unavailable <p style=\"border:1px solid red\">Window Opening /Close: <br />
 										Date : $day <br/>
 										Time : $appointmentWindowTime <br/>
-										Ends : $appointmentWindowEnds <br/></p>
+										Ends : " . ( $appointmentWindowEnds -1) . "<br/></p>
 										<p style=\"border:1px solid red\">Prior Appointment: <br />
 										Date : $day <br/>
 										Time : $priorApptMash <br/>
@@ -927,14 +851,15 @@ function verifyAppontment3Day() {
 						$dayAndTime = $day . $time;	
 						
 						echo '<td id="' . $id . '" class="' . $class . '" width="100%" height="50px" style="' . $style .  '">';
-						################################
+						################################										
+						
 						
 						
 						
 						?>
 						
 								
-						<button class="buttonSaveDayTime" value="<? echo $dayAndTime ?>" name="dayAndTimeRevised" type="submit">
+						<button class="buttonSaveDayTime" value="<? echo $appointmentWindowTime ?>" name="dayAndTimeRevised" type="submit">
 							<div style="height:100%;width:100%;border:0;margin:0;">
 								<span style="font-size:15;font-weight:bold;text-align:center"><br/><? echo $timeOfDay  ?></span>
 							</div>
